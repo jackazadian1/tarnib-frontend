@@ -1,0 +1,30 @@
+.seat{
+    position: absolute;
+    padding: 10px;
+    font-size: 24px;
+    border-radius: 5px;
+}
+
+.player_1_seat{
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.player_2_seat{
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.player_3_seat{
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.player_4_seat{
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}

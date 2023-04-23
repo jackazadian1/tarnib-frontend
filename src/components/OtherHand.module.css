@@ -1,0 +1,24 @@
+.hand{
+    position: absolute;
+    display: flex;
+}
+
+.player_2_hand{
+    right: 50px;
+    top: 50%;
+    transform:translateY(calc(-50% + 65px));
+    flex-direction: column;
+}
+
+.player_3_hand{
+    left: 50%;
+    top: 20px;
+    transform:translateX(calc(-50% - 40px));
+}
+
+.player_4_hand{
+    left: 50px;
+    top: 50%;
+    transform:translateY(calc(-50% + 65px));
+    flex-direction: column;
+}

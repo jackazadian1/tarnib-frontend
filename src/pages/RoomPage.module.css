@@ -1,0 +1,48 @@
+.game_container{
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+.room_id{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+}
+
+.turn_counter{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+}
+
+.player_name{
+    position: absolute;
+    font-size: 24px;
+}
+
+.seat_1_name{
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.seat_2_name{
+    right: 200px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.seat_3_name{
+    top: 180px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.seat_4_name{
+    left: 200px;
+    top: 50%;
+    transform: translateY(-50%);
+}

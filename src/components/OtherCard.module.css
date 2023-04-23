@@ -1,0 +1,22 @@
+ .card{
+    width: 105px;
+    height: 150px;
+    border-radius: 10px;
+    background-position: center;
+    background-size: cover;
+}
+
+.player_2_card{
+    margin-top: -130px;
+    transform: rotateZ(90deg);
+}
+
+.player_3_card{
+    margin-right: -80px;
+}
+
+
+.player_4_card{
+    margin-top: -130px;
+    transform: rotateZ(90deg);
+}

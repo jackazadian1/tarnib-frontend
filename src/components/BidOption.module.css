@@ -1,0 +1,28 @@
+.option{
+    text-align: center;
+    padding: 10px;
+    font-size: 20px;
+    min-width: 40px;
+    width: 60px;
+    border-radius: 5px;
+    border: 1px solid rgb(57, 57, 57);
+    transition: all 0.2s ease-in-out, transform 0.05s ease-in-out;
+    background-color: white;
+    cursor: pointer;
+    transform: scale(1);
+    user-select: none;
+}
+
+.option:hover{
+    color: white;
+    background-color: rgb(102, 166, 219);
+}
+
+.option:active{
+    transform: scale(0.95);
+}
+
+.option.disabled{
+    opacity: 0.5;
+    pointer-events: none;
+}
