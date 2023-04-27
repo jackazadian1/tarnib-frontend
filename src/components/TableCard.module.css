@@ -1,0 +1,33 @@
+.card{
+    width: 105px;
+    height: 150px;
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+}
+
+.seat_1_card{
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+}
+
+.seat_2_card{
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.seat_3_card{
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+}
+
+.seat_4_card{
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+}

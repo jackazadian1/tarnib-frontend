@@ -47,7 +47,7 @@ h2{
 }
 
 .player_2_bid{
-    right: 20px;
+    left: 20px;
     top: 50%;
     transform: translateY(-50%);
 }
@@ -59,7 +59,7 @@ h2{
 }
 
 .player_4_bid{
-    left: 20px;
+    right: 20px;
     top: 50%;
     transform: translateY(-50%);
 }

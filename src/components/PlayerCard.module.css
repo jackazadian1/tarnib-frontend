@@ -50,6 +50,7 @@
 
 .card.valid:hover{
     transform: translateY(-50px);
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
 }
 
 .card.valid{

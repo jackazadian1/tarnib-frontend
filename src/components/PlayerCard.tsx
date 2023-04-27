@@ -7,14 +7,15 @@ interface PlayerCardProps {
   card: string;
   suit: string;
   valid: boolean;
+  handleCardClick: (card: string) => void
 }
 
 // Define the PlayerHand component
-const PlayerCard: React.FC<PlayerCardProps> = ({ card, suit, valid }) => {
+const PlayerCard: React.FC<PlayerCardProps> = ({ card, suit, valid, handleCardClick }) => {
 
   const validClass = valid ? styles.valid : ''
   return (
-    <div className={`${styles.card} ${suit} ${validClass}`} style={{backgroundImage: 'url("/assets/images/png-cards/'+card+'.png")'}}></div>
+    <div className={`${styles.card} ${suit} ${validClass}`} style={{backgroundImage: 'url("/assets/images/png-cards/'+card+'.png")'}} onClick={() => { if(valid) handleCardClick(card)}}></div>
   );
 };
 

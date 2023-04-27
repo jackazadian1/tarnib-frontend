@@ -1,0 +1,17 @@
+.table{
+    position: absolute;
+    top: 220px;
+    bottom: 300px;
+    min-height: 400px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50vw;
+}
+
+.player_turn{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+}

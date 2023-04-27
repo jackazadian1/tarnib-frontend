@@ -4,7 +4,7 @@
 }
 
 .player_2_hand{
-    right: 50px;
+    left: 50px;
     top: 50%;
     transform:translateY(calc(-50% + 65px));
     flex-direction: column;
@@ -17,7 +17,7 @@
 }
 
 .player_4_hand{
-    left: 50px;
+    right: 50px;
     top: 50%;
     transform:translateY(calc(-50% + 65px));
     flex-direction: column;

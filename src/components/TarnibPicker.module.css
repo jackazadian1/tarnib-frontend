@@ -14,10 +14,18 @@
 h2{
     text-align: center;
     position: absolute;
-    top: 10px;
     left: 50%;
-    transform: translateX(-50%);
     margin: 0;
+}
+
+.player_picking{
+    top: 10px;
+    transform: translateX(-50%);
+}
+
+.other_picking{
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .cards{
