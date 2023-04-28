@@ -4,6 +4,16 @@
     height: 100vh;
 }
 
+.room_info{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+}
+
+
 .game_info{
     position: absolute;
     top: 20px;
@@ -13,7 +23,7 @@
     flex-direction: column;
 }
 
-.game_info>*{
+.room_info>*, .game_info>*{
     font-size: 24px;
 }
 

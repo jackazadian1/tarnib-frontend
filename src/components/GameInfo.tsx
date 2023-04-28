@@ -24,11 +24,13 @@ interface GameInfoProps {
   team2: string;
   team1score: number;
   team2score: number;
+  team1GameScore: number;
+  team2GameScore: number;
   handleCardClick: (card: string) => void
 }
 
 // Define the PlayerHand component
-const GameInfo: React.FC<GameInfoProps> = ({ playerName, seat2Player, seat3Player, seat4Player, roomId, round, turn, playerCards, tarnib, goal, bidWinner, isYourTurn, currentPlay, playerSeat, team1, team2, team1score, team2score, handleCardClick }) => {
+const GameInfo: React.FC<GameInfoProps> = ({ playerName, seat2Player, seat3Player, seat4Player, roomId, round, turn, playerCards, tarnib, goal, bidWinner, isYourTurn, currentPlay, playerSeat, team1, team2, team1score, team2score, team1GameScore, team2GameScore, handleCardClick }) => {
 
   return (
     <div className={styles.game_container}>
@@ -36,8 +38,11 @@ const GameInfo: React.FC<GameInfoProps> = ({ playerName, seat2Player, seat3Playe
         <div className={`${styles.player_name} ${styles.seat_2_name}`}>{seat2Player}</div>
         <div className={`${styles.player_name} ${styles.seat_3_name}`}>{seat3Player}</div>
         <div className={`${styles.player_name} ${styles.seat_4_name}`}>{seat4Player}</div>
-        <div className={styles.room_id}>Room ID: <span>{roomId}</span></div>
-
+        <div className={styles.room_info}>
+          <div>Room ID: <span>{roomId}</span></div>
+          <div>{team1}: <span>{team1GameScore}</span></div>
+          <div>{team2}: <span>{team2GameScore}</span></div>
+        </div>
         <div className={styles.game_info}>
           <div>Round: <span>{round}</span></div>
           <div>Turn: <span>{turn}</span></div>
@@ -45,7 +50,6 @@ const GameInfo: React.FC<GameInfoProps> = ({ playerName, seat2Player, seat3Playe
           <div>Goal: <span>{goal}</span></div>
           <div>{team1}: <span>{team1score}</span></div>
           <div>{team2}: <span>{team2score}</span></div>
-
         </div>
         
 

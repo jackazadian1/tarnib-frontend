@@ -19,6 +19,7 @@ const RoomPage: React.FC = () => {
   const {
     playerData,
     setPlayerData,
+    playerSeatRef,
     gameData,
     setGameData,
     roundData,
@@ -60,6 +61,7 @@ const RoomPage: React.FC = () => {
 
   useWebSocketListeners(listening, {
     playerData,
+    playerSeatRef,
     setGameData,
     roundData,
     setRoundData,
@@ -104,7 +106,9 @@ const RoomPage: React.FC = () => {
           team1={`${gameData.players[0]}-${gameData.players[2]}`}
           team2={`${gameData.players[1]}-${gameData.players[3]}`}
           team1score={roundData.team_1_score}
-          team2score={roundData.team_2_score}/>
+          team2score={roundData.team_2_score}
+          team1GameScore={gameData.team_1_score}
+          team2GameScore={gameData.team_2_score}/>
           {(roundData.tarnib == null || roundData.tarnib == '') ? ( //if tarnib is still unset, either bidding is still ongoing or tarnib has not been picked yet. otherwise, render the actual game
             <React.Fragment>
               {biddingWinner != -1 ? ( //if bidding is complete for this round render tarnib picker, otherwhise render bids
