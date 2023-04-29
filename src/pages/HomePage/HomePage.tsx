@@ -13,6 +13,7 @@ const HomePage: React.FC = () => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/create`, form1Data);
       console.log(response.data);
+      
       navigate(`/room?room_id=${response.data.room_id}&player_name=${response.data.player_name}`);
     } catch (error) {
       console.error(error);
