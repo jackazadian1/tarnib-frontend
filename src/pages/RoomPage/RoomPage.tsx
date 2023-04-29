@@ -15,6 +15,17 @@ const useQuery = () => {
 const RoomPage: React.FC = () => {
   const query = useQuery();
 
+
+
+  
+
+  const [seatSelected, setSeatSelected] = useState(false);
+  const [biddingWinner, setBiddingWinner] = useState(-1);
+
+  const [readyToFetch, setReadyToFetch] = useState(false);
+
+  const [listening, setListening] = useState(false);
+
   const {
     playerData,
     setPlayerData,
@@ -31,14 +42,10 @@ const RoomPage: React.FC = () => {
     handleTarnibPickClick,
     handleCardClick,
     evalPlayerSeats,
-  } = useGameData();
+    initRoundData,
+    updateBiddingWinner
+  } = useGameData(setBiddingWinner);
 
-  const [seatSelected, setSeatSelected] = useState(false);
-  const [biddingWinner, setBiddingWinner] = useState(-1);
-
-  const [readyToFetch, setReadyToFetch] = useState(false);
-
-  const [listening, setListening] = useState(false);
 
   useEffect(() => {
     const playerName = query.get('player_name') || '';
@@ -57,15 +64,14 @@ const RoomPage: React.FC = () => {
   }, [readyToFetch]);
 
   useWebSocketListeners(listening, {
-    playerData,
+    setPlayerData,
     playerSeatRef,
     setGameData,
-    roundData,
     setRoundData,
-    turnData,
     setTurnData,
     evalPlayerSeats,
-  });
+    initRoundData
+    }, setBiddingWinner);
 
   useEffect(() => {
     setSeatSelected(gameData.players.includes(playerData.player_name));

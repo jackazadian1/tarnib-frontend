@@ -1,16 +1,17 @@
 import { useEffect } from 'react';
 import echo from '../echoSetup';
+import axios from 'axios';
 
-export const useWebSocketListeners = (listening: boolean, useGameData: any) => {
+export const useWebSocketListeners = (listening: boolean, useGameData: any, setBiddingWinner: React.Dispatch<React.SetStateAction<number>>) => {
   const {
-    playerData,
+    setPlayerData,
     playerSeatRef,
     setGameData,
-    roundData,
     setRoundData,
-    turnData,
     setTurnData,
     evalPlayerSeats,
+    initRoundData
+
   } = useGameData;
 
   useEffect(() => {
@@ -75,8 +76,9 @@ export const useWebSocketListeners = (listening: boolean, useGameData: any) => {
             }
         })
   
-      }).listen('.new-turn', (event: any) => {
+      }).listen('.new-turn', async (event: any) => {
         console.log(event);
+
         setRoundData((prevRoundData: any) => {
             if (event.player_turn === 0 || event.player_turn === 2) {
                 return {
@@ -100,6 +102,28 @@ export const useWebSocketListeners = (listening: boolean, useGameData: any) => {
             current_play: ['', '', '', ''],
         };
         });
+      }).listen('.new-round', (event: any) => {
+        console.log(event);
+
+        setGameData((prevGameData: any) => { 
+          return{
+              ...prevGameData, 
+              round: event.round,
+              team_1_score: event.team_1_game_score,
+              team_2_score: event.team_2_game_score
+          }
+      });
+
+      setPlayerData((prevPlayerData: any) => {
+          return{
+              ...prevPlayerData,
+              player_cards: event.cards,
+          }
+      });
+      initRoundData(event);
+      setBiddingWinner(-1);
+
+
       })
     }
   
