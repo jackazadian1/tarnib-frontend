@@ -11,7 +11,7 @@ const HomePage: React.FC = () => {
   const handleForm1Submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:97/api/create', form1Data);
+      const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/create`, form1Data);
       console.log(response.data);
       navigate(`/room?room_id=${response.data.room_id}&player_name=${response.data.player_name}`);
     } catch (error) {
@@ -23,7 +23,7 @@ const HomePage: React.FC = () => {
     e.preventDefault();    
     navigate(`/room?room_id=${form2Data.room_id}&player_name=${form2Data.player_name}`);
     // try {
-    //   const response = await axios.get('http://127.0.0.1:97/api/join', form2Data);
+    //   const response = await axios.get(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/join`, form2Data);
     //   console.log(response.data);
     // } catch (error) {
     //   console.error(error);

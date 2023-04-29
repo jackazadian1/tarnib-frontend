@@ -49,7 +49,7 @@ export const useGameData = () => {
     //if (readyToFetch && playerData.player_name && gameData.room_id) {
         if (playerData.player_name && gameData.room_id) {
       try {
-        const response = await axios.get('http://127.0.0.1:97/api/roundInfo',{
+        const response = await axios.get(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/roundInfo`,{
           params: {
             room_id: gameData.room_id,
             player_name: playerData.player_name
@@ -144,7 +144,7 @@ export const useGameData = () => {
       seat: seatNumber
     }
     try {
-      const response = await axios.post('http://127.0.0.1:97/api/chooseSeat', data, {headers: postHeaders})
+      const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/chooseSeat`, data, {headers: postHeaders})
       console.log(response);
       setGameData((prevGameData) => {
         const players = [...prevGameData.players];
@@ -181,7 +181,7 @@ const handleBidClick = async (amount: number) => {
     amount: amount
   }
   try {
-    const response = await axios.post('http://127.0.0.1:97/api/bid', data, {headers: postHeaders})
+    const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/bid`, data, {headers: postHeaders})
     console.log(response.data);
 
     setRoundData((prevRoundData: any) => {
@@ -207,7 +207,7 @@ const handleTarnibPickClick = async (suit: string) => {
     player_turn: roundData.current_bidder
   }
 
-  const response = await axios.post('http://127.0.0.1:97/api/setTarnib', data, {headers: postHeaders})
+  const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/setTarnib`, data, {headers: postHeaders})
   console.log(response.data);
 
   setRoundData((prevRoundData) => {
@@ -236,7 +236,7 @@ const handleCardClick = async (card: string) => {
   }
   console.log(data);
 
-  const response = await axios.post('http://127.0.0.1:97/api/playCard', data, {headers: postHeaders})
+  const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/playCard`, data, {headers: postHeaders})
   console.log(response.data);
 
   setTurnData((prevTurnData) => {
@@ -269,7 +269,7 @@ const setNewTurn = async () => {
     room_id: gameData.room_id,
   }
 
-  const response = await axios.post('http://127.0.0.1:97/api/setNewTurn', data, {headers: postHeaders})
+  const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/setNewTurn`, data, {headers: postHeaders})
   console.log(response.data);
 
   if(response.data.player_turn == 0 || response.data.player_turn == 2){
@@ -311,7 +311,7 @@ const setNewTurn = async () => {
         room_id: gameData.room_id,
     }
   
-    const response = await axios.post('http://127.0.0.1:97/api/setNewRound', data, {headers: postHeaders})
+    const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/setNewRound`, data, {headers: postHeaders})
     console.log(response.data);
   
     fetchData();
