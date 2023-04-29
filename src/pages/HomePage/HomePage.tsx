@@ -20,7 +20,7 @@ const HomePage: React.FC = () => {
   };
 
   const handleForm2Submit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();    
+    e.preventDefault();
     navigate(`/room?room_id=${form2Data.room_id}&player_name=${form2Data.player_name}`);
     // try {
     //   const response = await axios.get(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/join`, form2Data);
@@ -33,30 +33,30 @@ const HomePage: React.FC = () => {
   return (
     <div className={styles.content}>
       <form className={styles.container} onSubmit={handleForm1Submit}>
-          <input
-            type="text"
-            value={form1Data.player_name}
-            onChange={(e) => setForm1Data({ ...form1Data, player_name: e.target.value })}
-            placeholder='Enter Your Name'
-            name='player_name'
-          />
+        <input
+          type="text"
+          value={form1Data.player_name}
+          onChange={(e) => setForm1Data({ ...form1Data, player_name: e.target.value })}
+          placeholder="Enter Your Name"
+          name="player_name"
+        />
         <button type="submit">Create Room</button>
       </form>
       <form className={styles.container} onSubmit={handleForm2Submit}>
-          <input
-            type="text"
-            value={form2Data.player_name}
-            onChange={(e) => setForm2Data({ ...form2Data, player_name: e.target.value })}
-            placeholder='Enter Your Name'
-            name='player_name'
-          />
-          <input
-            type="text"
-            value={form2Data.room_id}
-            onChange={(e) => setForm2Data({ ...form2Data, room_id: e.target.value })}
-            placeholder='Room ID'
-            name='room_id'
-          />
+        <input
+          type="text"
+          value={form2Data.player_name}
+          onChange={(e) => setForm2Data({ ...form2Data, player_name: e.target.value })}
+          placeholder="Enter Your Name"
+          name="player_name"
+        />
+        <input
+          type="text"
+          value={form2Data.room_id}
+          onChange={(e) => setForm2Data({ ...form2Data, room_id: e.target.value })}
+          placeholder="Room ID"
+          name="room_id"
+        />
         <button type="submit">Join Room</button>
       </form>
     </div>
