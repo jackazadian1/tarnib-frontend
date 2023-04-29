@@ -4,11 +4,13 @@ This repository contains the React/TypeScript frontend for the Tarnib card game 
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Contribution](#contribution)
-- [License](#license)
+- [Tarnib Frontend](#tarnib-frontend)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+  - [Usage](#usage)
+  - [Formatting](#formatting)
+  - [VS Code Extensions](#vs-code-extensions)
 
 ## Installation
 
@@ -46,10 +48,20 @@ Update the `.env` file with your environment-specific configurations, such as th
 
 Navigate to the Tarnib frontend in your web browser, and you will be able to interact with the game interface. To play the game, ensure that the Tarnib backend is also running and correctly configured.
 
-## Contribution
+## Formatting
+To format your code, use the prettier config in the root directory:
+```
+// Install prettier
+1. npm install --save-dev prettier 
 
-Contributions are welcome! If you find any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request.
+// Run prettier for all the files under a directory
+2. npx prettier --write "src/**/*.tsx"
+```
 
-## License
 
-The Tarnib Frontend is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## VS Code Extensions
+VS Code is ugly and not so powerful out of the box, get the following extensions to fix this:
+
+   1. `Material Icon Theme` -->  Give Icons to your files/folders
+   2. `Rainbow Brackets` -->  Highlights matching brackets with different colors to help identify code blocks and make your code more readable.
+   3. `Code Spell Checker` --> Checks your spelling as you type, helps you catch typos or spelling errors before they become a problem.

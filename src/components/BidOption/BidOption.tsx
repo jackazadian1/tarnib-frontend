@@ -6,15 +6,15 @@ import styles from './BidOption.module.css';
 interface BidOptionProps {
   amount: number;
   max_bid: number;
-  handleBidClick: (amount: number) => void
+  handleBidClick: (amount: number) => void;
 }
 
 // Define the PlayerHand component
 const BidOption: React.FC<BidOptionProps> = ({ amount, max_bid, handleBidClick }) => {
-    let disabled = (amount <= max_bid && amount != -1) ? styles.disabled : ''
+  let disabled = amount <= max_bid && amount != -1 ? styles.disabled : '';
   return (
     <div className={`${styles.option} ${disabled}`} onClick={() => handleBidClick(amount)}>
-        {amount == -1 ? "Pass" : amount}
+      {amount == -1 ? 'Pass' : amount}
     </div>
   );
 };
