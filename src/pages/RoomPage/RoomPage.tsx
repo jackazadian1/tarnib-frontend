@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Bids from '../../components/Bids/Bids';
 import SeatSelect from '../../components/SeatSelect/SeatSelect';
 import TarnibPicker from '../../components/TarnibPicker/TarnibPicker';
@@ -8,16 +8,8 @@ import GameInfo from '../../components/GameInfo/GameInfo';
 import { useGameData } from '../../components/useGameData';
 import { useWebSocketListeners } from '../../components/useWebSocketListeners';
 
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
-
 const RoomPage: React.FC = () => {
-  const query = useQuery();
-
-
-
-  
+  const { roomId } = useParams();
 
   const [seatSelected, setSeatSelected] = useState(false);
   const [biddingWinner, setBiddingWinner] = useState(-1);
@@ -43,39 +35,47 @@ const RoomPage: React.FC = () => {
     handleCardClick,
     evalPlayerSeats,
     initRoundData,
-    updateBiddingWinner
+    updateBiddingWinner,
+    setSocketId,
   } = useGameData(setBiddingWinner);
 
 
   useEffect(() => {
-    const playerName = query.get('player_name') || '';
-    const roomId = query.get('room_id') || '';
-
-    if (playerName && roomId) {
-      setPlayerData({ ...playerData, player_name: playerName });
+    if (roomId) {
       setGameData({ ...gameData, room_id: roomId });
       setReadyToFetch(true);
     }
   }, []);
 
   useEffect(() => {
-    setListening(true);
     fetchData();
   }, [readyToFetch]);
 
+  useEffect(() => {
+    if(playerData.player_token != undefined && playerData.player_token != ''){
+      setListening(true);
+    }
+  }, [playerData.player_token])
+
   useWebSocketListeners(listening, {
+    playerData,
     setPlayerData,
     playerSeatRef,
+    gameData,
     setGameData,
     setRoundData,
     setTurnData,
     evalPlayerSeats,
-    initRoundData
+    initRoundData,
+    setSocketId,
     }, setBiddingWinner);
 
   useEffect(() => {
+    console.log(playerData.player_name);
+    console.log(gameData.players);
+
     setSeatSelected(gameData.players.includes(playerData.player_name));
-  }, [gameData.players]);
+  }, [gameData.players, playerData.player_name]);
 
   useEffect(() => {
     if (Math.max(...roundData.bids) != 0 && Math.max(...roundData.bids) == roundData.bids[roundData.current_bidder]) {

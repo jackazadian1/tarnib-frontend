@@ -1,25 +1,33 @@
-import { useEffect } from 'react';
-import echo from '../echoSetup';
+import { useEffect, useState } from 'react';
+import echoInstance from '../echoSetup';
 import axios from 'axios';
+
 
 export const useWebSocketListeners = (listening: boolean, useGameData: any, setBiddingWinner: React.Dispatch<React.SetStateAction<number>>) => {
   const {
+    playerData,
     setPlayerData,
     playerSeatRef,
+    gameData,
     setGameData,
     setRoundData,
     setTurnData,
     evalPlayerSeats,
-    initRoundData
-
+    initRoundData,
+    setSocketId,
   } = useGameData;
+
 
   useEffect(() => {
     if(listening){
-      const channel = echo.channel('public.room.1');
+      
+      const echo = echoInstance(gameData.room_id, playerData.player_token)
+
+      const channel = echo.channel(`public.room.${gameData.room_id}`);
   
       channel.subscribed(()=>{
         console.log('subscribed!');
+        setSocketId(echo.socketId());
         
       }).listen('.seat-chosen', (event: any) => {  
         console.log(event);
@@ -102,6 +110,12 @@ export const useWebSocketListeners = (listening: boolean, useGameData: any, setB
             current_play: ['', '', '', ''],
         };
         });
+      })
+
+      const privateChannel = echo.channel(`public.room.${gameData.room_id}${playerData.player_token}`);
+
+      privateChannel.subscribed(() => {
+        console.log('subscribed to private');
       }).listen('.new-round', (event: any) => {
         console.log(event);
 

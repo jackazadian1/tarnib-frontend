@@ -15,24 +15,24 @@ interface PlayerCardProps {
 const PlayerCard: React.FC<PlayerCardProps> = ({ card, suit, valid, handleCardClick }) => {
   const validClass = valid ? styles.valid : '';
   return (
-    <motion.div
+    <div
       className={`${styles.card} ${suit} ${validClass}`}
       style={{ backgroundImage: 'url("/assets/images/png-cards/' + card + '.png")' }}
       onClick={() => {
         if (valid) handleCardClick(card);
       }}
-      initial={{ opacity: 0, scale: 0.2}}
-      animate={{ opacity: 1, scale: 1}}
-      whileHover={{
-        scale: 1.2,
-        y: -150,
-        x: -10,
-        transition: { duration: 0 }
-      }}
-      whileTap={{ 
-        scale: 0.9,
-        transition: { duration: 0 }
-      }}
+      // initial={{ opacity: 0, scale: 0.2}}
+      // animate={{ opacity: 1, scale: 1}}
+      // whileHover={{
+      //   scale: 1.2,
+      //   y: -150,
+      //   x: -10,
+      //   transition: { duration: 0 }
+      // }}
+      // whileTap={{ 
+      //   scale: 0.9,
+      //   transition: { duration: 0 }
+      // }}
     />
   );
 };

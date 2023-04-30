@@ -2,19 +2,30 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './HomePage.module.css';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 const HomePage: React.FC = () => {
   const [form1Data, setForm1Data] = useState({ player_name: '' });
-  const [form2Data, setForm2Data] = useState({ player_name: '', room_id: '' });
+  const [form2Data, setForm2Data] = useState({ room_id: '' });
   const navigate = useNavigate();
+
+  const cookies = new Cookies();
 
   const handleForm1Submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    var randomToken = require('random-token');
+    let token = randomToken(16);
+
     try {
-      const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/create`, form1Data);
+      let data = {
+        ...form1Data,
+        player_token: token,
+      }
+
+      const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/create`, data);
       console.log(response.data);
-      
-      navigate(`/room?room_id=${response.data.room_id}&player_name=${response.data.player_name}`);
+      cookies.set('player_token', token, {path: '/'});
+      navigate(`/room/${response.data.room_id}`);
     } catch (error) {
       console.error(error);
     }
@@ -22,7 +33,7 @@ const HomePage: React.FC = () => {
 
   const handleForm2Submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    navigate(`/room?room_id=${form2Data.room_id}&player_name=${form2Data.player_name}`);
+    navigate(`/room?room_id=${form2Data.room_id}`);
     // try {
     //   const response = await axios.get(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/join`, form2Data);
     //   console.log(response.data);
@@ -44,13 +55,6 @@ const HomePage: React.FC = () => {
         <button type="submit">Create Room</button>
       </form>
       <form className={styles.container} onSubmit={handleForm2Submit}>
-        <input
-          type="text"
-          value={form2Data.player_name}
-          onChange={(e) => setForm2Data({ ...form2Data, player_name: e.target.value })}
-          placeholder="Enter Your Name"
-          name="player_name"
-        />
         <input
           type="text"
           value={form2Data.room_id}
