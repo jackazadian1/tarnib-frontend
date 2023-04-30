@@ -13,13 +13,6 @@ const echoInstance = (room_id: string, token: string) => {
     wsPort: 6001,
     encrypted: false,
     enabledTransports: ['ws', 'wss'],
-    authEndpoint: `${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/broadcasting_token_auth`,
-    auth:{
-      params: {
-        room_id: room_id,
-        token: token
-      }
-    }
   });
 }
 
