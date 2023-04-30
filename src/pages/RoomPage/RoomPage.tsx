@@ -71,16 +71,12 @@ const RoomPage: React.FC = () => {
     }, setBiddingWinner);
 
   useEffect(() => {
-    console.log(playerData.player_name);
-    console.log(gameData.players);
-
     setSeatSelected(gameData.players.includes(playerData.player_name));
   }, [gameData.players, playerData.player_name]);
 
   useEffect(() => {
     if (Math.max(...roundData.bids) != 0 && Math.max(...roundData.bids) == roundData.bids[roundData.current_bidder]) {
       setBiddingWinner(roundData.current_bidder);
-      console.log('bidding winner: ' + gameData.players[roundData.current_bidder]);
     }
   }, [roundData.bids]);
 
