@@ -49,19 +49,21 @@ Update the `.env` file with your environment-specific configurations, such as th
 Navigate to the Tarnib frontend in your web browser, and you will be able to interact with the game interface. To play the game, ensure that the Tarnib backend is also running and correctly configured.
 
 ## Formatting
+
 To format your code, use the prettier config in the root directory:
+
 ```
 // Install prettier
-1. npm install --save-dev prettier 
+1. npm install --save-dev prettier
 
 // Run prettier for all the files under a directory
 2. npx prettier --write "src/**/*.tsx"
 ```
 
-
 ## VS Code Extensions
+
 VS Code is ugly and not so powerful out of the box, get the following extensions to fix this:
 
-   1. `Material Icon Theme` -->  Give Icons to your files/folders
-   2. `Rainbow Brackets` -->  Highlights matching brackets with different colors to help identify code blocks and make your code more readable.
-   3. `Code Spell Checker` --> Checks your spelling as you type, helps you catch typos or spelling errors before they become a problem.
+1.  `Material Icon Theme` --> Give Icons to your files/folders
+2.  `Rainbow Brackets` --> Highlights matching brackets with different colors to help identify code blocks and make your code more readable.
+3.  `Code Spell Checker` --> Checks your spelling as you type, helps you catch typos or spelling errors before they become a problem.
