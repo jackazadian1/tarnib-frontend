@@ -26,7 +26,7 @@ export const useWebSocketListeners = (listening: boolean, useGameData: any, setB
       const channel = echo.channel(`public.room.${gameData.room_id}`);
   
       channel.subscribed(()=>{
-        console.log('subscribed!');
+        console.log('subscribed!');        
         setSocketId(echo.socketId());
         
       }).listen('.seat-chosen', (event: any) => {  
