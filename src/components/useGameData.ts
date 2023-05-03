@@ -93,13 +93,20 @@ export const useGameData = (setBiddingWinner: React.Dispatch<React.SetStateActio
                 }
             });
 
+            let token = cookies.get('player_token')
+            
+            if(token == '' || token == undefined){
+                var randomToken = require('random-token');
+                token = randomToken(16);
+            }
+
             setPlayerData((prevPlayerData: any) => {
                 return{
                     ...prevPlayerData,
                     player_name: response.data.player_name,
                     player_cards: response.data.cards,
                     player_seat: response.data.player_seat,
-                    player_token: cookies.get('player_token')
+                    player_token: token
                 }
             });
 
@@ -155,19 +162,20 @@ export const useGameData = (setBiddingWinner: React.Dispatch<React.SetStateActio
 
     const handleSeatButtonClick = async (seatNumber: number, playerName: string) => {
         console.log("Button clicked for seat number:", seatNumber);
-        var randomToken = require('random-token');
-        let token = randomToken(16);
+
         // Do something with the seat number
         let data = {
         room_id: gameData.room_id,
         player_name: playerName,
         seat: seatNumber,
-        player_token: token
+        player_token: playerData.player_token
         }
         try {
         const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/chooseSeat`, data, {headers: postHeaders})
         console.log(response.data);
-        cookies.set('player_token', token, {path: '/'});
+        console.log(playerData.player_token);
+        
+        cookies.set('player_token', playerData.player_token, {path: '/'});
         setGameData((prevGameData) => {
             const players = [...prevGameData.players];
             players[seatNumber-1] = playerName;
@@ -186,7 +194,6 @@ export const useGameData = (setBiddingWinner: React.Dispatch<React.SetStateActio
             return{
                 ...prevPlayerData,
                 player_name: playerName,
-                player_token: token,
                 player_seat: seatNumber,
                 player_cards: response.data.player_cards
             }
