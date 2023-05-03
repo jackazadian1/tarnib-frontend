@@ -61,7 +61,8 @@ export const useGameData = (setBiddingWinner: React.Dispatch<React.SetStateActio
             params: {
                 room_id: gameData.room_id,
                 player_token: cookies.get('player_token')
-            }
+            },
+            headers: postHeaders
             });
             // Do something with the response data, e.g., update the component's state
             console.log('fetch data: ',response.data);
