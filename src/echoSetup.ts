@@ -9,10 +9,10 @@ const echoInstance = (room_id: string, token: string) => {
     broadcaster: 'pusher',
     key: 'livepost_key', // Replace with your actual Pusher key
     cluster: 'mt1', // Replace with your actual Pusher cluster
-    wsHost: '54.152.23.16',
+    wsHost: 'tarnib.net',
     wsPort: 80,
-    wssPort: 80,
-    forceTLS: false,
+    wssPort: 443,
+    forceTLS: true,
     disableStats: true,
     enabledTransports: ['ws', 'wss'],
   });

@@ -11,6 +11,10 @@ const HomePage: React.FC = () => {
 
   const cookies = new Cookies();
 
+  const postHeaders = {
+    'Content-Type': 'application/json',
+  }
+
   const handleForm1Submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     var randomToken = require('random-token');
@@ -22,7 +26,7 @@ const HomePage: React.FC = () => {
         player_token: token,
       }
 
-      const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/create`, data);
+      const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/create`, data, {headers: postHeaders});
       console.log(response.data);
       cookies.set('player_token', token, {path: '/'});
       navigate(`/room/${response.data.room_id}`);
