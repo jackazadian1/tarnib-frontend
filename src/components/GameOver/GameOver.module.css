@@ -1,0 +1,29 @@
+.container{
+    background-color: rgba(255,255,255,0.5);
+    position: absolute;
+    top: 220px;
+    bottom: 300px;
+    min-height: 400px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50vw;
+    border-radius: 5px;
+    box-shadow: 0 0 50px 5px black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container>*{
+    text-align: center;
+}
+
+.container button{
+    padding: 10px;
+    font-size: 20px;
+    background-color: rgb(227, 227, 227);
+    border-radius: 5px;
+    border: 1px solid rgb(168, 168, 168);
+    cursor: pointer;
+}

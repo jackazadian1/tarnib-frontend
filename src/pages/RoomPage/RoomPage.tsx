@@ -7,6 +7,13 @@ import TableCards from '../../components/TableCards/TableCards';
 import GameInfo from '../../components/GameInfo/GameInfo';
 import { useGameData } from '../../components/useGameData';
 import { useWebSocketListeners } from '../../components/useWebSocketListeners';
+import { GameStates } from '../../components/GameStates';
+import WaitingForPlayers from '../../components/WaitingForPlayers/WaitingForPlayers';
+import RoomLink from '../../components/RoomLink/RoomLink';
+import Game from '../../components/Game/Game';
+
+
+
 
 const RoomPage: React.FC = () => {
   const { roomId } = useParams();
@@ -15,8 +22,13 @@ const RoomPage: React.FC = () => {
   const [biddingWinner, setBiddingWinner] = useState(-1);
 
   const [readyToFetch, setReadyToFetch] = useState(false);
+  const [hasFethced, setHasFetched] = useState(false);
 
+  const [readyToListen, setReadyToListen] = useState(false);
   const [listening, setListening] = useState(false);
+  const [listeningPrivate, setListeningPrivate] = useState(false);
+
+  const [gameState, setGameState] = useState(GameStates.Loading);
 
   const {
     playerData,
@@ -26,18 +38,23 @@ const RoomPage: React.FC = () => {
     setGameData,
     roundData,
     setRoundData,
-    turnData,
     fetchData,
+    turnData,
     setTurnData,
+    turnWinner,
+    setTurnWinner,
     handleSeatButtonClick,
     handleBidClick,
     handleTarnibPickClick,
     handleCardClick,
+    handleMoveToNewRoomClick,
     evalPlayerSeats,
     initRoundData,
     updateBiddingWinner,
     setSocketId,
-  } = useGameData(setBiddingWinner);
+    previousTurnData,
+    setPreviousTurnData,
+  } = useGameData(setBiddingWinner, setHasFetched);
 
 
   useEffect(() => {
@@ -53,11 +70,11 @@ const RoomPage: React.FC = () => {
 
   useEffect(() => {
     if(playerData.player_token != undefined && playerData.player_token != ''){
-      setListening(true);
+      setReadyToListen(true);
     }
   }, [playerData.player_token])
 
-  useWebSocketListeners(listening, {
+  useWebSocketListeners(readyToListen, {
     playerData,
     setPlayerData,
     playerSeatRef,
@@ -65,13 +82,16 @@ const RoomPage: React.FC = () => {
     setGameData,
     setRoundData,
     setTurnData,
+    setTurnWinner,
     evalPlayerSeats,
     initRoundData,
+    setPreviousTurnData,
     setSocketId,
-    }, setBiddingWinner);
+    }, setBiddingWinner, setListening, setListeningPrivate);
 
   useEffect(() => {
     setSeatSelected(gameData.players.includes(playerData.player_name));
+
   }, [gameData.players, playerData.player_name]);
 
   useEffect(() => {
@@ -80,78 +100,91 @@ const RoomPage: React.FC = () => {
     }
   }, [roundData.bids]);
 
-  return (
-    <div>
-      {seatSelected ? ( //if all players have selected a seat, render game, otherwise, render seat selection
-        <React.Fragment>
-          <GameInfo
-            playerName={playerData.player_name}
-            seat2Player={gameData.seat_2_player}
-            seat3Player={gameData.seat_3_player}
-            seat4Player={gameData.seat_4_player}
-            roomId={gameData.room_id}
-            round={gameData.round}
-            turn={roundData.turn}
-            playerCards={playerData.player_cards}
-            tarnib={roundData.tarnib}
-            goal={roundData.goal}
-            bidWinner={gameData.players[roundData.current_bidder]}
-            isYourTurn={turnData.player_turn + 1 == playerData.player_seat}
-            currentPlay={turnData.current_play}
-            playerSeat={playerData.player_seat}
-            handleCardClick={handleCardClick}
-            team1={`${gameData.players[0]}-${gameData.players[2]}`}
-            team2={`${gameData.players[1]}-${gameData.players[3]}`}
-            team1score={roundData.team_1_score}
-            team2score={roundData.team_2_score}
-            team1GameScore={gameData.team_1_score}
-            team2GameScore={gameData.team_2_score}
-          />
-          {roundData.tarnib == null || roundData.tarnib == '' ? ( //if tarnib is still unset, either bidding is still ongoing or tarnib has not been picked yet. otherwise, render the actual game
-            <React.Fragment>
-              {biddingWinner != -1 ? ( //if bidding is complete for this round render tarnib picker, otherwhise render bids
-                <TarnibPicker
-                  handleTarnibPickClick={handleTarnibPickClick}
-                  picker_name={gameData.players[biddingWinner]}
-                  player_name={playerData.player_name}
-                />
-              ) : (
-                <Bids
-                  readyToPlay={!gameData.players.includes('')}
-                  current_bidder={roundData.current_bidder}
-                  bids={roundData.bids}
-                  players={gameData.players}
-                  player={playerData.player_name}
-                  handleBidClick={handleBidClick}
-                />
-              )}
-            </React.Fragment>
-          ) : (
-            <TableCards
-              playeTurn={turnData.player_turn}
-              playerTurnName={gameData.players[turnData.player_turn]}
-              playersCards={[
-                turnData.current_play[0],
-                turnData.current_play[1],
-                turnData.current_play[2],
-                turnData.current_play[3],
-              ]}
-              playerSeat={playerData.player_seat}
-              playerName={playerData.player_name}
+  useEffect(() =>{
+    console.log(GameStates[gameState]);
+  }, [gameState]);
+
+  useEffect(() =>{//game state decider
+    if(hasFethced && listening && listeningPrivate){
+      if(seatSelected){
+        if(!gameData.players.includes('')){
+          if(biddingWinner != -1){
+            if(roundData.tarnib != '' && roundData.tarnib != null){
+                setGameState(GameStates.NewTurn)
+            }else{
+              setGameState(GameStates.PickingTarnib)
+            }
+          }else{
+            if(gameData.team_1_score >= 31 || gameData.team_2_score >= 31){
+              setGameState(GameStates.GameOver)
+            }else{
+            setGameState(GameStates.Bidding)
+            }
+          }
+        }else{
+          setGameState(GameStates.WaitingForPlayers)
+        }
+      }else{
+        setGameState(GameStates.SelectingSeat)
+      }
+    }
+  }, [hasFethced, listening, listeningPrivate, seatSelected, gameData.players, biddingWinner, roundData.tarnib, gameData.team_1_score, gameData.team_2_score]);
+
+  useEffect(() => {
+    if(!turnData.current_play.includes('')){
+      //setGameState(GameStates.TurnEnded)
+    }
+  }, [turnData.current_play])
+
+  const renderGameState = (gameState: GameStates) =>{
+    switch(gameState){
+      case GameStates.Loading:
+        return <div>hi</div>;
+
+      case GameStates.SelectingSeat:
+        return  (
+          <React.Fragment>
+            <SeatSelect
+            player_1={gameData.players[0]}
+            player_2={gameData.players[1]}
+            player_3={gameData.players[2]}
+            player_4={gameData.players[3]}
+            onSeatButtonClick={handleSeatButtonClick}
             />
-          )}
-        </React.Fragment>
-      ) : (
-        <SeatSelect
-          player_1={gameData.players[0]}
-          player_2={gameData.players[1]}
-          player_3={gameData.players[2]}
-          player_4={gameData.players[3]}
-          onSeatButtonClick={handleSeatButtonClick}
-        />
-      )}
-    </div>
-  );
+          </React.Fragment>);
+
+      case GameStates.WaitingForPlayers:
+        return (
+          <React.Fragment>
+            <WaitingForPlayers
+            player_1={playerData.player_name}
+            player_2={gameData.seat_2_player}
+            player_3={gameData.seat_3_player}
+            player_4={gameData.seat_4_player}
+            />
+          </React.Fragment>);
+    }
+
+    //default case
+    return (<Game
+      gameState={gameState}
+      playerData={playerData}
+      gameData={gameData}
+      roundData={roundData}
+      turnData={turnData}
+      turnWinner={turnWinner}
+      handleCardClick={handleCardClick}
+      handleBidClick={handleBidClick}
+      handleTarnibPickClick={handleTarnibPickClick}
+      previousTurnData={previousTurnData}
+      handleMoveToNewRoomClick={handleMoveToNewRoomClick}
+      />);
+  }
+
+  return (<div>
+            <RoomLink/>
+            {renderGameState(gameState)}
+          </div>);
 };
 
 export default RoomPage;

@@ -1,0 +1,21 @@
+.invite_link{
+    position: absolute;
+    font-size: 20px;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    transform: scale(1);
+    transition: 0.1s transform ease-in-out;
+}
+
+.invite_link:hover{
+    transform: scale(1.01);
+}
+
+.invite_link:active{
+    transform: scale(1);
+}

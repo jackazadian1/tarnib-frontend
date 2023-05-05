@@ -12,6 +12,8 @@ interface TableCardsProps {
   playerName: string;
   playersCards: string[];
   playerSeat: number;
+  turnWinner: string;
+  tarnib: string;
 }
 
 // const getCardSuit = (card: string) => {
@@ -24,15 +26,19 @@ interface TableCardsProps {
 // };
 
 // Define the PlayerHand component
-const TableCards: React.FC<TableCardsProps> = ({ playeTurn, playerTurnName, playerName, playersCards, playerSeat }) => {
-  const text = playerName == playerTurnName ? 'Your turn' : `${playerTurnName}'s turn`;
+const TableCards: React.FC<TableCardsProps> = ({ playeTurn, playerTurnName, playerName, playersCards, playerSeat, turnWinner, tarnib }) => {
+  let text = playerName == playerTurnName ? 'Your turn' : `${playerTurnName}'s turn`;
+  if(!playersCards.includes('')){
+    text = turnWinner == undefined ? '' : `${turnWinner} won!`;
+    if(turnWinner == playerName) text = 'You won!';
+  }
   return (
     <div className={styles.table}>
       <div className={styles.player_turn}>{text}</div>
-      <TableCard card={playersCards[0]} seatNumber={1} playerSeat={playerSeat} />
-      <TableCard card={playersCards[1]} seatNumber={2} playerSeat={playerSeat} />
-      <TableCard card={playersCards[2]} seatNumber={3} playerSeat={playerSeat} />
-      <TableCard card={playersCards[3]} seatNumber={4} playerSeat={playerSeat} />
+      <TableCard card={playersCards[0]} tarnib={tarnib} seatNumber={1} playerSeat={playerSeat} />
+      <TableCard card={playersCards[1]} tarnib={tarnib} seatNumber={2} playerSeat={playerSeat} />
+      <TableCard card={playersCards[2]} tarnib={tarnib} seatNumber={3} playerSeat={playerSeat} />
+      <TableCard card={playersCards[3]} tarnib={tarnib} seatNumber={4} playerSeat={playerSeat} />
     </div>
   );
 };

@@ -37,13 +37,7 @@ const HomePage: React.FC = () => {
 
   const handleForm2Submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    navigate(`/room?room_id=${form2Data.room_id}`);
-    // try {
-    //   const response = await axios.get(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/join`, form2Data);
-    //   console.log(response.data);
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    navigate(`/room/${form2Data.room_id}`);
   };
 
   return (

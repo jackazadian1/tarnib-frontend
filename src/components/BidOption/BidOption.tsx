@@ -12,6 +12,7 @@ interface BidOptionProps {
 // Define the PlayerHand component
 const BidOption: React.FC<BidOptionProps> = ({ amount, max_bid, handleBidClick }) => {
   let disabled = amount <= max_bid && amount != -1 ? styles.disabled : '';
+  if(amount == -1 && max_bid == 3) disabled = styles.disabled; 
   return (
     <div className={`${styles.option} ${disabled}`} onClick={() => handleBidClick(amount)}>
       {amount == -1 ? 'Pass' : amount}

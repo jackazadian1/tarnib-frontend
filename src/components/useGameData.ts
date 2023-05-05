@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import echo from '../echoSetup';
-import RoomPage from '../pages/RoomPage/RoomPage';
 import Cookies from 'universal-cookie';
+import { useNavigate } from 'react-router-dom';
 
-export const useGameData = (setBiddingWinner: React.Dispatch<React.SetStateAction<number>>) => {
+export const useGameData = (setBiddingWinner: React.Dispatch<React.SetStateAction<number>>, setHasFetched: React.Dispatch<React.SetStateAction<boolean>>) => {
     // all state, state update functions, and server communication functions here
     const [playerData, setPlayerData] = useState({ 
         player_name: '',
@@ -41,6 +40,13 @@ export const useGameData = (setBiddingWinner: React.Dispatch<React.SetStateActio
         current_play: [] as string[],
     });
 
+    const [previousTurnData, setPreviousTurnData] = useState({
+        previous_turn_winner: -1,
+        previous_play: [] as string[],
+    });
+
+    const [turnWinner, setTurnWinner] = useState(-1);
+
     const playerSeatRef = useRef(playerData.player_seat);
 
     const [socketId, setSocketId] = useState('');
@@ -51,6 +57,7 @@ export const useGameData = (setBiddingWinner: React.Dispatch<React.SetStateActio
     }
 
     const cookies = new Cookies();
+    const navigate = useNavigate();
 
     const fetchData = async () => {
         //if (readyToFetch && playerData.player_name && gameData.room_id) {
@@ -113,7 +120,9 @@ export const useGameData = (setBiddingWinner: React.Dispatch<React.SetStateActio
 
             initRoundData(response.data);
 
-            
+            setTimeout(()=>{
+                setHasFetched(true);
+            },500)
 
         } catch (error) {
             // Handle any errors that occurred during the request
@@ -229,8 +238,17 @@ export const useGameData = (setBiddingWinner: React.Dispatch<React.SetStateActio
     }
     };
 
+    var tarnibPickDoubleClick = false;
     const handleTarnibPickClick = async (suit: string) => {
     console.log(suit);
+
+    if(!tarnibPickDoubleClick){
+        tarnibPickDoubleClick = true;
+        setTimeout(() => {
+            tarnibPickDoubleClick = false
+        }, 200)
+        return false;
+    }
 
     let data = {
         room_id: gameData.room_id,
@@ -258,82 +276,99 @@ export const useGameData = (setBiddingWinner: React.Dispatch<React.SetStateActio
     })
     };
 
+    var cardClickDisabled = false;
     const handleCardClick = async (card: string) => {
-    console.log(card);
 
-    let data = {
-        room_id: gameData.room_id,
-        player_seat: playerData.player_seat,
-        card: card
-    }
-    console.log(data);
-
-    const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/playCard`, data, {headers: postHeaders})
-    console.log(response.data);
-
-    setTurnData((prevTurnData) => {
-        return{
-            ...prevTurnData,
-            current_play: response.data.current_play,
-            player_turn: response.data.player_turn
+        if(cardClickDisabled) return false;
+        cardClickDisabled = true;
+        console.log(card);
+        let data = {
+            room_id: gameData.room_id,
+            player_seat: playerData.player_seat,
+            card: card
         }
-    })
+        console.log(data);
 
-    setPlayerData((prevPlayerData) => {
-        return{
-            ...prevPlayerData,
-            player_cards: response.data.player_cards,
-        }
-        
-    })
+        const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/playCard`, data, {headers: postHeaders})
+        console.log(response.data);
+        cardClickDisabled = false;
+        setTurnData((prevTurnData) => {
+            return{
+                ...prevTurnData,
+                current_play: response.data.current_play,
+                player_turn: response.data.player_turn
+            }
+        })
 
-    if(roundData.tarnib != null || roundData.tarnib != ''){
-        if(!response.data.current_play.includes('')){
-        console.log('turn finished')
-        setNewTurn()
+        setPlayerData((prevPlayerData) => {
+            return{
+                ...prevPlayerData,
+                player_cards: response.data.player_cards,
+            }
+            
+        })
+
+        if(roundData.tarnib != null || roundData.tarnib != ''){
+            if(!response.data.current_play.includes('')){
+            console.log('turn finished')
+            setNewTurn(response.data.current_play)
+            }
         }
-    }
 
     };
 
-    const setNewTurn = async () => {
-    let data = {
-        room_id: gameData.room_id,
-    }
-
-    const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/setNewTurn`, data, {headers: postHeaders})
-    console.log(response.data);
-
-    if(response.data.player_turn == 0 || response.data.player_turn == 2){
-        setRoundData((prevRoundData) => {
-            return{
-                ...prevRoundData,
-                team_1_score: response.data.team_1_score,
-                turn: response.data.turn,
-            }
-        })
-    }else{
-        setRoundData((prevRoundData) => {
-            return{
-                ...prevRoundData,
-                team_2_score: response.data.team_2_score,
-                turn: response.data.turn,
-            }
-
-        })
-    }
-
-    setTurnData((prevTurnData) => {
-        return{
-            ...prevTurnData,
-            player_turn: response.data.player_turn,
-            current_play: ['','','','']
+    const setNewTurn = async (response_current_play:string[]) => {
+        let data = {
+            room_id: gameData.room_id,
+            previous_play: response_current_play,
         }
-    })
 
-    if(response.data.turn == 14){
-        setNewRound();
-    }
+        const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/setNewTurn`, data, {headers: postHeaders})
+        console.log(response.data);
+
+        if(response.data.player_turn == 0 || response.data.player_turn == 2){
+            setRoundData((prevRoundData) => {
+                return{
+                    ...prevRoundData,
+                    team_1_score: response.data.team_1_score,
+                    turn: response.data.turn,
+                }
+            })
+        }else{
+            setRoundData((prevRoundData) => {
+                return{
+                    ...prevRoundData,
+                    team_2_score: response.data.team_2_score,
+                    turn: response.data.turn,
+                }
+
+            })
+        }
+
+        setTurnWinner(response.data.player_turn)
+
+
+
+        await sleep(3000);
+
+        setPreviousTurnData({
+            previous_play: response_current_play,
+            previous_turn_winner: response.data.player_turn
+        })
+
+        setTurnWinner(-1);
+
+        setTurnData((prevTurnData) => {
+            return{
+                ...prevTurnData,
+                player_turn: response.data.player_turn,
+                current_play: ['','','','']
+            }
+        })
+
+        if(response.data.turn == 14){
+            setNewRound();
+        }
 
 
     }
@@ -369,9 +404,25 @@ export const useGameData = (setBiddingWinner: React.Dispatch<React.SetStateActio
 
     }
 
+    const handleMoveToNewRoomClick = async () => {
+        let data = {
+            room_id: gameData.room_id,
+        }
+    
+        const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}/api/moveToNewRoom`, data, {headers: postHeaders})
+        console.log(response.data);
+
+        window.location.href = `/room/${response.data.room_id}`;
+    };
+
     useEffect(() => {
         playerSeatRef.current = playerData.player_seat;
     }, [playerData])
+
+    function sleep(ms:number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    
 
     return {
         playerData,
@@ -383,15 +434,20 @@ export const useGameData = (setBiddingWinner: React.Dispatch<React.SetStateActio
         setRoundData,
         turnData,
         setTurnData,
+        turnWinner,
+        setTurnWinner,
         fetchData,
         handleSeatButtonClick,
         handleBidClick,
         handleTarnibPickClick,
         handleCardClick,
+        handleMoveToNewRoomClick,
         setNewTurn,
         evalPlayerSeats,
         initRoundData,
         setSocketId,
+        previousTurnData,
+        setPreviousTurnData,
         updateBiddingWinner: (winner: number) => setBiddingWinner(winner)
     };
 };
