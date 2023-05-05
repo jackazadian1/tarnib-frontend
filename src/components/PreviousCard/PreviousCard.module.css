@@ -5,6 +5,7 @@
     background-size: cover;
     position: absolute;
     border-radius: 5px;
+    image-rendering: -webkit-optimize-contrast;
 }
 
 .card.tarnib{
@@ -12,7 +13,7 @@
 }
 
 .seat_1_card{
-    bottom: 0;
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
 
@@ -20,12 +21,12 @@
 
 .seat_2_card{
     top: 50%;
-    left: 0;
+    left: 10px;
     transform: translateY(-50%);
 }
 
 .seat_3_card{
-    top: 0;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
 
@@ -33,6 +34,6 @@
 
 .seat_4_card{
     top: 50%;
-    right: 0;
+    right: 10px;
     transform: translateY(-50%);
 }

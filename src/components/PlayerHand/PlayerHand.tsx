@@ -87,6 +87,7 @@ const PlayerHand: React.FC<PlayerHandProps> = ({
           card={card}
           suit={getCardSuit(card)}
           valid={validSuits.includes(getCardSuit(card)) && isYourTurn}
+          tarnib={tarnib}
           handleCardClick={handleCardClick}
         />
       ))}

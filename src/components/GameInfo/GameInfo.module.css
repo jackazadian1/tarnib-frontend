@@ -6,33 +6,33 @@
 
 .room_info{
     position: absolute;
-    top: 20px;
+    top: 80px;
     right: 20px;
     display: flex;
-    gap: 5px;
+    gap: 10px;
     flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 10px;
+    border-radius: 5px;
 }
 
 
-.game_info{
+.round_info{
     position: absolute;
     top: 20px;
     left: 20px;
     display: flex;
-    gap: 5px;
+    gap: 10px;
     flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 10px;
+    border-radius: 5px;
 }
 
-.room_info>*, .game_info>*{
+.room_info>*, .round_info>*{
     font-size: 24px;
 }
 
-.room_id{
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 24px;
-}
 
 .player_name{
     position: absolute;
@@ -61,4 +61,14 @@
     right: 200px;
     top: 50%;
     transform: translateY(-50%);
+}
+
+.tarnib img{
+    width: 25px;
+    position: absolute;
+    transform: translate(5px, -2px);
+}
+
+.tarnib span{
+    margin-left: 35px;
 }

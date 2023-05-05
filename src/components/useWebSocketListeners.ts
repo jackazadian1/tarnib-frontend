@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import echoInstance from '../echoSetup';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
-export const useWebSocketListeners = (listening: boolean, useGameData: any, setBiddingWinner: React.Dispatch<React.SetStateAction<number>>) => {
+export const useWebSocketListeners = (readyToListen: boolean, useGameData: any, setBiddingWinner: React.Dispatch<React.SetStateAction<number>>, setListening: React.Dispatch<React.SetStateAction<boolean>>, setListeningPrivate: React.Dispatch<React.SetStateAction<boolean>>) => {
   const {
     playerData,
     setPlayerData,
@@ -12,14 +12,18 @@ export const useWebSocketListeners = (listening: boolean, useGameData: any, setB
     setGameData,
     setRoundData,
     setTurnData,
+    setTurnWinner,
     evalPlayerSeats,
     initRoundData,
+    setPreviousTurnData,
     setSocketId,
   } = useGameData;
 
+  const navigate = useNavigate();
+
 
   useEffect(() => {
-    if(listening){
+    if(readyToListen){
       
       const echo = echoInstance(gameData.room_id, playerData.player_token)
 
@@ -28,6 +32,7 @@ export const useWebSocketListeners = (listening: boolean, useGameData: any, setB
       channel.subscribed(()=>{
         console.log('subscribed!');        
         setSocketId(echo.socketId());
+        setListening(true);
         
       }).listen('.seat-chosen', (event: any) => {  
         console.log(event);
@@ -102,20 +107,35 @@ export const useWebSocketListeners = (listening: boolean, useGameData: any, setB
                 };
             }
         });
-    
+
+        setTurnWinner(event.player_turn)
+
+
+        await sleep(3000);
+
+        setTurnWinner(-1);
+        setPreviousTurnData({
+          previous_play: event.previous_play,
+          previous_turn_winner: event.player_turn
+        })
         setTurnData((prevTurnData: any) => {
+          
         return {
             ...prevTurnData,
             player_turn: event.player_turn,
             current_play: ['', '', '', ''],
         };
         });
+      }).listen('.moved-room', (event: any) => {
+        console.log(event);
+        window.location.href = `/room/${event.new_room_id}`;
       })
 
       const privateChannel = echo.channel(`public.room.${gameData.room_id}${playerData.player_token}`);
 
       privateChannel.subscribed(() => {
         console.log('subscribed to private');
+        setListeningPrivate(true);
       }).listen('.new-round', (event: any) => {
         console.log(event);
 
@@ -141,5 +161,9 @@ export const useWebSocketListeners = (listening: boolean, useGameData: any, setB
       })
     }
   
-  }, [listening]);
+  }, [readyToListen]);
+
+  function sleep(ms:number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 };

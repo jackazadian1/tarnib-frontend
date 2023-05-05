@@ -1,11 +1,10 @@
 // Import React and any necessary dependencies
 import React, { useEffect } from 'react';
-import styles from './TableCard.module.css';
+import styles from './PreviousCard.module.css';
 import { CARD_SUIT_CLUBS, CARD_SUIT_DIAMONDS, CARD_SUIT_HEARTS, CARD_SUIT_SPADES } from '../../utils/Constant';
-import { log } from 'console';
 
 // Define a type for the component's props (if needed)
-interface TableCardProps {
+interface PreviousCardProps {
   card: string;
   tarnib: string;
   seatNumber: number;
@@ -22,7 +21,7 @@ const getCardSuit = (card: string) => {
 };
 
 // Define the PlayerHand component
-const TableCard: React.FC<TableCardProps> = ({ card, tarnib, seatNumber, playerSeat }) => {
+const PreviousCard: React.FC<PreviousCardProps> = ({ card, tarnib, seatNumber, playerSeat }) => {
   let styles_arr = [styles.seat_1_card, styles.seat_2_card, styles.seat_3_card, styles.seat_4_card];
   let offset = playerSeat - 1;
   let index = seatNumber - offset <= 0 ? seatNumber - offset + 4 : seatNumber - offset;
@@ -36,4 +35,4 @@ const TableCard: React.FC<TableCardProps> = ({ card, tarnib, seatNumber, playerS
 };
 
 // Export the PlayerHand component
-export default TableCard;
+export default PreviousCard;

@@ -1,0 +1,33 @@
+.previous_turn_display{
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 24px;
+    background: rgba(255,255,255,0.8);
+    cursor: help;
+}
+
+.previous_turn{
+    position: absolute;
+    top: 220px;
+    bottom: 300px;
+    min-height: 400px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50vw;
+    border-radius: 5px;
+    background-color: rgb(241, 241, 241);
+    z-index: 10;
+}
+
+.previous_turn_winner{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    text-align: center;
+    padding: 10px;
+}
