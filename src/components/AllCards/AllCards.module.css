@@ -1,0 +1,29 @@
+
+.player_name{
+    position: absolute;
+    font-size: 24px;
+}
+
+.seat_1_name{
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.seat_2_name{
+    left: 200px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.seat_3_name{
+    top: 180px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.seat_4_name{
+    right: 200px;
+    top: 50%;
+    transform: translateY(-50%);
+}
