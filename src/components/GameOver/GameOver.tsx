@@ -19,7 +19,7 @@ const GameOver: React.FC<GameOverProps> = ({winners, team_1, team_2, team_1_scor
         <h2>{winners} have won the Game</h2>
         <h3>{team_1} score: {team_1_score}</h3>
         <h3>{team_2} score: {team_2_score}</h3>
-        <button onClick={() => handleMoveToNewRoomClick()}>Click here to move to a new room</button>
+        <button onClick={() => handleMoveToNewRoomClick()}>Create New Room</button>
     </div>
   );
 };
