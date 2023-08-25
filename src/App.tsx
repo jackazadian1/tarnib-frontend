@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import HomePage from './pages/HomePage/HomePage';
-import RoomPage from './pages/RoomPage/RoomPage';
+import HomePage from './pages/Tarnib/HomePage/HomePage';
+import RoomPage from './pages/Tarnib/RoomPage/RoomPage';
+import PokerHomePage from './pages/Poker/HomePage/HomePage';
+import PokerRoomPage from './pages/Poker/RoomPage/RoomPage';
 
 function App() {
   return (
@@ -11,6 +12,8 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/room/:roomId" element={<RoomPage />} />
+          <Route path="/poker" element={<PokerHomePage />} />
+          <Route path="poker/room/:roomId" element={<PokerRoomPage />} />
         </Routes>
       </Router>
     </div>
