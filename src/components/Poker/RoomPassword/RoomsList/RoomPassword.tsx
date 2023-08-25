@@ -15,25 +15,6 @@ const RoomPassword: React.FC<RoomPasswordProps> = ({ handleFormSubmit}) => {
 
   const [formData, setFormData] = useState({ password: '' });
 
-  const postHeaders = {
-    'Content-Type': 'application/json',
-  }
-  // const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     let data = {
-  //       ...formData,
-  //     }
-
-  //     const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}api/authenticate`, data, {headers: postHeaders});
-  //     console.log(response.data);
-
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-  
   return (
     <div className={styles.content}>
       <form className={styles.form_container} onSubmit={(e)=>handleFormSubmit(e,formData)}>
