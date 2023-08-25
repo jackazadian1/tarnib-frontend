@@ -1,0 +1,51 @@
+.container{
+    display: flex;
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    border-radius: 5px;
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+.header{
+  padding: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header>*{
+  width: 100%;
+  text-align: center;
+}
+
+.rooms_toggle{
+  background-color: rgb(219, 231, 252);
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  text-align: center;
+}
+
+.rooms_toggle:active{
+  background-color: rgb(198, 210, 231);
+}
+
+.list{
+  width: 100%;
+}
+
+@media screen and (max-width: 500px) {
+  .header {
+    flex-direction: column;
+  }
+}
