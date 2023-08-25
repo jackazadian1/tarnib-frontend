@@ -11,7 +11,6 @@ import { GameStates } from '../../../components/Tarnib/GameStates';
 import WaitingForPlayers from '../../../components/Tarnib/WaitingForPlayers/WaitingForPlayers';
 import RoomLink from '../../../components/Tarnib/RoomLink/RoomLink';
 import Game from '../../../components/Tarnib/Game/Game';
-import PlayerAnalytics from '../../../components/Tarnib/PlayerAnalytics/PlayerAnalytics';
 
 
 
@@ -184,7 +183,6 @@ const RoomPage: React.FC = () => {
 
   return (<div>
             <RoomLink/>
-            <PlayerAnalytics />
             {renderGameState(gameState)}
           </div>);
 };
