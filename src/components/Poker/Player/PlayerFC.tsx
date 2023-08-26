@@ -28,7 +28,7 @@ const PlayerFC: React.FC<PlayerProps> = ({player, handleAddChipsClick, handleCas
       </div>
       {player.cash_out_amount == -1 ? (
         <div className={styles.buttons}>
-          <div className={styles.add_chips} onClick={() => setAddingChips(true)}>Add Chips</div>
+          <div className={styles.add_chips} onClick={() => setAddingChips(true)}>Edit Balance</div>
           <div className={styles.cashout} onClick={() => setCashingOut(true)}>Cashout</div>
         </div>
       ) : (
@@ -48,13 +48,16 @@ const PlayerFC: React.FC<PlayerProps> = ({player, handleAddChipsClick, handleCas
         <div className={styles.popup_buy_in}>Current Balance: {formatter.format(player.buy_in_amount)}</div>
       </div>
       <input
-            pattern="[0-9]+"
+            type="number"
             value={chipsAmount}
             onChange={(e) => setChipsAmount(parseInt(e.target.value ? e.target.value : "0"))}
             placeholder="Amount"
             name="amount"
           />
-      <div className={styles.popup_button} onClick={() => handleAddChipsClick(player.id, chipsAmount)}>Add Chips</div>
+      <div className={styles.popup_button} onClick={() => {
+        handleAddChipsClick(player.id, chipsAmount)
+        setAddingChips(false)
+      }}>Submit</div>
     </div>}
 
     {cashingOut &&    
@@ -71,7 +74,10 @@ const PlayerFC: React.FC<PlayerProps> = ({player, handleAddChipsClick, handleCas
             placeholder="Amount"
             name="amount"
           />
-      <div className={styles.popup_button} onClick={() => handleCashoutClick(player.id, cashoutAmount)}>Cashout</div>
+      <div className={styles.popup_button} onClick={() => {
+        handleCashoutClick(player.id, cashoutAmount)
+        setCashingOut(false)
+        }}>Cashout</div>
     </div>}
 
     </React.Fragment>
