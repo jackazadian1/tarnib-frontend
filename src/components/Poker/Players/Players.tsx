@@ -7,18 +7,27 @@ import PlayerFC from '../Player/PlayerFC';
 // Define a type for the component's props (if needed)
 interface PlayersProps {
   players: Player[];
-  handleAddChipsClick: (id: number, amount: number) => void;
-  handleCashoutClick: (id: number, amount: number) => void;
+  isOpen: boolean;
+  handleSelectPlayer: (id: number,) => void;
 }
 
 // Define the PlayerHand component
-const Players: React.FC<PlayersProps> = ({ players, handleAddChipsClick, handleCashoutClick}) => {
+const Players: React.FC<PlayersProps> = ({ players, isOpen, handleSelectPlayer}) => {
 
   return (
     <div className={styles.container}>
-      {players.map((player) => (
-        <PlayerFC player={player} handleAddChipsClick={handleAddChipsClick} handleCashoutClick={handleCashoutClick} key={player.id}/>
-      ))}
+      <div className={styles.header}>
+        <div className={styles.player_name}><strong>Player</strong></div>
+        <div><strong>Buy In</strong></div>
+        <div><strong>Cashout</strong></div>
+        <div><strong>Result</strong></div>
+      </div>
+      <div className={styles.body}>
+        {players.map((player) => (
+          <PlayerFC player={player} isOpen={isOpen} handleSelectPlayer={handleSelectPlayer} key={player.id}/>
+        ))}
+      </div>
+
     </div>
 
 

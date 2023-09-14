@@ -1,12 +1,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
 
+@font-face{
+    font-family: PokerFont;
+    src: url("/public/assets/fonts/PokerInOctoberDemo-Dxm3.otf");
+}
+
+
+:root{
+    --green-theme: #50c878;
+    --green-theme-active: #30a267;
+    --green-theme-focus: #63b5ef;
+    --green-theme-hover: #a7e7bc;
+    --green-theme-danger: rgb(226, 61, 61);
+    --green-theme-danger-active: rgb(151, 54, 54);
+    --background-color: rgb(240,240,240);
+
+}
+
 body{
     margin: 0px;
     padding: 0px;
-    background-color: #50c878;
+    background-color: rgb(240,240,240);
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
 }
 
 *{
     font-family: 'Ubuntu', sans-serif;
     box-sizing: border-box;
+}
+
+body.locked{
+    overflow: hidden;
 }

@@ -9,7 +9,11 @@
     align-items: center;
     font-size: 18px;
     border-radius: 5px;
-    margin-top: 20px;
+    overflow: hidden;
+}
+
+.container h2{
+    font-size: 24px;
 }
 
 .reimbursment{
@@ -17,4 +21,22 @@
     width: 100%;
     text-align: center;
     border-top: 1px solid #ddd;
+}
+
+.reimbursment:nth-child(2n){
+    background-color: rgba(196, 208, 236, 0.409);
+}
+
+.not_zero{
+    padding: 20px;
+    padding-top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.not_zero p{
+    margin: 0;
+    text-align: center;
 }

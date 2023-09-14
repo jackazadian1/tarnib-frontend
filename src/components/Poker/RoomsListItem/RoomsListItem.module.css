@@ -12,11 +12,11 @@
 }
 
 .container:hover{
-  background-color: rgb(170, 218, 238);
+  background-color: var(--green-theme-hover);
 }
 
 .closed_room{
-  background-color: rgb(225, 184, 184);
+  background-color: rgb(215, 215, 215);
 }
 
 .lock{

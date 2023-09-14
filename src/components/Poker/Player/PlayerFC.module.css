@@ -8,18 +8,25 @@
     justify-content: space-between;
     align-items: center;
     font-size: 18px;
+    cursor: pointer;
+}
+
+.container:hover{
+    background-color: var(--green-theme-hover);
 }
 
 .container:last-child{
-    border-bottom: none;
+    border-bottom: none !important;
 }
 
 .container.profit{
-    background-color: rgb(123, 218, 123);
+    background-color: rgb(95, 228, 110);
+    border-bottom: 1px solid rgba(74, 175, 86, 0.5);
 }
 
 .container.loss{
-    background-color: rgb(231, 130, 130);
+    background-color: rgb(232, 105, 105);
+    border-bottom: 1px solid rgba(178, 53, 53, 0.5);
 }
 
 .container>div{
@@ -33,9 +40,17 @@
 
 .player_info > div{
     text-align: left;
-    width: 100%;
+    width: 22%;
+    padding: 0px 5px;
 }
 
+.player_name{
+    padding-left: 0px !important;
+    width: 34% !important;
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+}
 
 .buttons{
     display: flex;
@@ -116,6 +131,7 @@
     gap: 10px;
     margin-top: 25px;
 }
+
 
 @media screen and (max-width: 600px) {
     .container {

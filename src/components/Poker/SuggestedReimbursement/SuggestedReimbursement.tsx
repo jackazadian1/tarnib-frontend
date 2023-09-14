@@ -7,15 +7,17 @@ import { formatter } from '../CurrencyFormat';
 // Define a type for the component's props (if needed)
 interface SuggestedReimbursementProps {
   players: Player[];
+  remainingBank: number;
+  activePlayers: number;
 }
 
 interface PlayerResults {
   name: string;
-  result: number
+  result: number;
 }
 
 // Define the PlayerHand component
-const SuggestedReimbursement: React.FC<SuggestedReimbursementProps> = ({ players}) => {
+const SuggestedReimbursement: React.FC<SuggestedReimbursementProps> = ({ players, remainingBank, activePlayers}) => {
   var bank = 0;
   var winners: PlayerResults[] = []
   var losers: PlayerResults[] = []
@@ -73,7 +75,23 @@ const SuggestedReimbursement: React.FC<SuggestedReimbursementProps> = ({ players
   return (
     <div className={styles.container}>
       <h2>Suggest Reimbursments</h2>
-      {transactions.map((transaction, key) => (<div className={styles.reimbursment} key={key}>{transaction}</div>))}
+      {remainingBank == 0 && activePlayers == 0 ? 
+      transactions.map((transaction, key) => (<div className={styles.reimbursment} key={key}>{transaction}</div>))
+      : (
+        <div className={styles.not_zero}>
+          {activePlayers == 0 ?
+           (<p>Check players' cashout amounts for accuracy. Ensure Remaining Bank hits $0 after all cashouts.
+            <br/>
+            <br/>
+            <strong>Current Remaining Bank: {formatter.format(remainingBank)}</strong>
+            <br/>
+            <br/>If chips are missing, cash out a player to reach $0, then resolve in person.</p>) : (
+            <p>Suggested Reimbursements will appear once all players have cashed out and the reamining balance is $0.</p>
+           )}
+          
+        </div>
+      )}
+      
     </div>
   );
 };

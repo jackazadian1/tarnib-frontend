@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Bids from '../../../components/Tarnib/Bids/Bids';
 import SeatSelect from '../../../components/Tarnib/SeatSelect/SeatSelect';
-import TarnibPicker from '../../../components/Tarnib/TarnibPicker/TarnibPicker';
-import TableCards from '../../../components/Tarnib/TableCards/TableCards';
-import GameInfo from '../../../components/Tarnib/GameInfo/GameInfo';
 import { useGameData } from '../../../components/Tarnib/useGameData';
 import { useWebSocketListeners } from '../../../components/Tarnib/useWebSocketListeners';
 import { GameStates } from '../../../components/Tarnib/GameStates';
 import WaitingForPlayers from '../../../components/Tarnib/WaitingForPlayers/WaitingForPlayers';
 import RoomLink from '../../../components/Tarnib/RoomLink/RoomLink';
 import Game from '../../../components/Tarnib/Game/Game';
-
+import styles from './RoomPage.module.css';
 
 
 
@@ -181,7 +177,7 @@ const RoomPage: React.FC = () => {
       />);
   }
 
-  return (<div>
+  return (<div className={styles.container}>
             <RoomLink/>
             {renderGameState(gameState)}
           </div>);

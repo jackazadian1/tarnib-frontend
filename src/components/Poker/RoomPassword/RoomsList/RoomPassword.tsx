@@ -1,8 +1,6 @@
 // Import React and any necessary dependencies
-import React, { useEffect, useState } from 'react';
-import styles from './RoomPassword.module.css';
-import { Room } from '../../Room';
-import axios from 'axios';
+import React, { useState } from 'react';
+import Form from '../../../Forms/Form';
 
 // Define a type for the component's props (if needed)
 interface RoomPasswordProps {
@@ -16,9 +14,9 @@ const RoomPassword: React.FC<RoomPasswordProps> = ({ handleFormSubmit}) => {
   const [formData, setFormData] = useState({ password: '' });
 
   return (
-    <div className={styles.content}>
-      <form className={styles.form_container} onSubmit={(e)=>handleFormSubmit(e,formData)}>
-        <div className={styles.intput_container}>
+      <Form submitHandler={(e)=>handleFormSubmit(e,formData)}>
+        <h2>Enter Password</h2>
+        <p>This room is password protected. To access it's results, please enter the room's password.</p>
         <input
           type="text"
           value={formData.password}
@@ -26,10 +24,9 @@ const RoomPassword: React.FC<RoomPasswordProps> = ({ handleFormSubmit}) => {
           placeholder="Password"
           name="password"
         />
-        </div>
         <button type="submit">Submit</button>
-      </form>
-    </div>
+      </Form>
+
 
   );
 };
