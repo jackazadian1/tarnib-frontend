@@ -13,7 +13,7 @@
 
 .container{
     width: 100%;
-    max-height: calc(100% - 10px);
+    max-height: 70vh;
     overflow: hidden;
     position: fixed;
     bottom: 0;
@@ -109,7 +109,7 @@
     display: flex;
     flex-direction: column;
     overflow: auto;
-    max-height: calc(100vh - 98px);
+    max-height: calc(70vh - 88px);
 }
 
 .body .section{
