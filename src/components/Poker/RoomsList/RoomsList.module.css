@@ -10,16 +10,18 @@
     align-items: center;
     font-size: 18px;
     border-radius: 5px;
-    margin-top: 20px;
     overflow: hidden;
 }
 
 .header{
   padding: 20px;
+  gap: 20px;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  flex-direction: column;
 }
 
 .header>*{
@@ -27,25 +29,47 @@
   text-align: center;
 }
 
-.rooms_toggle{
-  background-color: rgb(219, 231, 252);
-  padding: 15px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  text-align: center;
+.header h2{
+  font-size: 24px;
+  margin: 0;
 }
 
-.rooms_toggle:active{
-  background-color: rgb(198, 210, 231);
+.header .rooms_toggle{
+  display: flex;
+  gap: 30px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header .toggle{
+  --toggle-width: 30px;
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: var(--toggle-width);
+  background-color: rgb(205, 205, 205);
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.header .toggle::after{
+  content: '';
+  width: 26px;
+  height: 26px;
+  background-color: rgb(217, 226, 232);
+  border-radius: 50%;
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  transform: translate(0px, -50%);
+  transition: all 0.25s ease-in-out;
+}
+
+.header .toggle.toggle_enabled::after{
+  transform: translate(var(--toggle-width), -50%);
+  background-color: var(--green-theme);
 }
 
 .list{
   width: 100%;
-}
-
-@media screen and (max-width: 500px) {
-  .header {
-    flex-direction: column;
-  }
 }

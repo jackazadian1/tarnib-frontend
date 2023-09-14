@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import RoomsList from '../../../components/Poker/RoomsList/RoomsList';
 import { Room } from '../../../components/Poker/Room';
+import PokerLayout from '../../../layouts/Poker/PokerLayout';
+import Form from '../../../components/Forms/Form';
 
 const PokerHomePage: React.FC = () => {
   const [form1Data, setForm1Data] = useState({ password: '' });
@@ -82,19 +84,22 @@ const PokerHomePage: React.FC = () => {
   }, [readyToFetch]);
 
   return (
-    <div className={styles.content}>
-      <form className={styles.container} onSubmit={handleForm1Submit}>
-        <input
-          type="text"
-          value={form1Data.password}
-          onChange={(e) => setForm1Data({ ...form1Data, password: e.target.value })}
-          placeholder="Password (optional)"
-          name="password"
-        />
-        <button type="submit">Create Room</button>
-      </form>
-      <RoomsList rooms={rooms} />
-    </div>
+    <PokerLayout>
+        <Form submitHandler={handleForm1Submit}>
+          <h2>Create Poker Room</h2>
+          <p>Create a new poker room. You can optionally password protect your room.</p>
+            <input
+              type="text"
+              value={form1Data.password}
+              onChange={(e) => setForm1Data({ ...form1Data, password: e.target.value })}
+              placeholder="Password (optional)"
+              name="password"
+            />
+            <button type="submit">Create Room</button>
+        </Form>
+        <RoomsList rooms={rooms} />
+    </PokerLayout>
+
   );
 };
 

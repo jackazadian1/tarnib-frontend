@@ -10,14 +10,25 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
         room_id: '',
         players: [] as Player[],
         bank: 0,
-        is_open: true
+        is_open: true,
+        date: ''
     });
 
     const [hasPassword, setHasPassword] = useState(-1);
 
+    const[selectedPlayer, setSelectedPlayer] = useState<Player | null>(null)
+
     const postHeaders = {
         'Content-Type': 'application/json',
     }
+
+    const dateOptions = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    } as any
+
 
     const checkForPassword = async() => {
         if (gameData.room_id) {
@@ -30,7 +41,11 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
                 });
                 // Do something with the response data, e.g., update the component's state
                 console.log('fetch data: ',response.data);
-                setHasPassword(response.data ? 1 : 0);
+                setHasPassword(response.data.has_password ? 1 : 0);
+                setGameData({
+                    ...gameData,
+                    date: new Date(response.data.date).toLocaleDateString("en-US", dateOptions)
+                });
                 
             } catch (error) {
                 // Handle any errors that occurred during the request
@@ -62,8 +77,12 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
                     cash_out_amount: player.cash_out_amount,
                 } as Player)
             });
-            
-            setGameData({ ...gameData, players: players, is_open: response.data.room.is_open == 0 ? false: true });
+
+            setGameData({
+                ...gameData,
+                players: players,
+                is_open: response.data.room.is_open == 0 ? false: true,
+            });
 
             setTimeout(()=>{
                 setHasFetched(true);
@@ -101,6 +120,8 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
                     players: updatedPlayers,
                 };
             })
+
+            handleSelectPlayer(id)
             
         } catch (error) {
             console.error(error);
@@ -136,7 +157,6 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
                 return {
                     ...prevGameData,
                     players: updatedPlayers,
-                    is_open: response.data.game_ended ? 0:1
                 };
             })
             
@@ -144,14 +164,58 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
             console.error(error);
         }
     };
+
+    useEffect(() => {
+        if(selectedPlayer){
+            handleSelectPlayer(selectedPlayer.id)
+        }
+    }, [gameData.players])
+
+    const handleSelectPlayer = (id:number) => {    
+        gameData.players.map((player) => {
+          if(player.id == id){
+            setSelectedPlayer(player)
+          }
+        })
+    };
     
+    const unselectPlayer = () => {    
+        setSelectedPlayer(null)
+    };
+
+    const handleDeletePlayerClick = async (id:number) => {    
+        try {
+          let data = {
+            room_id: gameData.room_id,
+            id: id
+          }
+    
+          const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}api/deletePokerPlayer`, data, {headers: postHeaders});
+          console.log(response.data);
+    
+          setGameData(prevGameData => ({
+            ...prevGameData,
+            players: gameData.players.filter((player) => {
+                return player.id != id
+              }),
+          }));
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
     return {
         gameData,
         setGameData,
         hasPassword,
         checkForPassword,
         fetchData,
+        selectedPlayer,
+        setSelectedPlayer,
         handleAddChipsClick,
-        handleCashoutClick
+        handleCashoutClick,
+        handleSelectPlayer,
+        unselectPlayer,
+        handleDeletePlayerClick
     };
 };

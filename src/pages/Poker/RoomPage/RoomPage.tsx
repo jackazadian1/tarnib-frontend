@@ -9,6 +9,9 @@ import { Player } from '../../../components/Poker/Player';
 import SuggestedReimbursement from '../../../components/Poker/SuggestedReimbursement/SuggestedReimbursement';
 import RoomPassword from '../../../components/Poker/RoomPassword/RoomsList/RoomPassword';
 import Cookies from 'universal-cookie';
+import Form from '../../../components/Forms/Form';
+import PokerLayout from '../../../layouts/Poker/PokerLayout';
+import PlayerPopup from '../../../components/Poker/PlayerPopup/PlayerPopup';
 
 
 
@@ -24,8 +27,12 @@ const PokerRoomPage: React.FC = () => {
   const [readyToFetchPassword, setReadyToFetchPassword] = useState(false);
   const [hasFethced, setHasFetched] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
+  const [remainingBank, setRemainingBank] = useState(0);
+  const [totalBank, setTotalBank] = useState(0);
+  const [activePlayers, setActivePlayers] = useState(0);
 
   const [formData, setFormData] = useState({ player_name: '', buy_in_amount: '' });
+
 
   const cookies = new Cookies();
 
@@ -35,8 +42,13 @@ const PokerRoomPage: React.FC = () => {
     hasPassword,
     checkForPassword,
     fetchData,
+    selectedPlayer,
+    setSelectedPlayer,
     handleAddChipsClick,
-    handleCashoutClick
+    handleCashoutClick,
+    handleSelectPlayer,
+    unselectPlayer,
+    handleDeletePlayerClick
   } = useGameDataPoker(setHasFetched);
 
 
@@ -62,6 +74,25 @@ const PokerRoomPage: React.FC = () => {
     fetchData();
   }, [readyToFetch]);
 
+  useEffect(() => {
+    let total = 0;
+    let totalAfterCashout = 0;
+    let activePlayersCount = 0;
+    gameData.players.forEach(player => {
+      total+= player.buy_in_amount;
+      totalAfterCashout+= player.buy_in_amount;
+      activePlayersCount++;
+      if(player.cash_out_amount != -1){
+        activePlayersCount--;
+        totalAfterCashout-= player.cash_out_amount
+      }
+    });
+
+    setTotalBank(total);
+    setRemainingBank(totalAfterCashout);
+    setActivePlayers(activePlayersCount)
+  }, [gameData.players]);
+
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -70,6 +101,10 @@ const PokerRoomPage: React.FC = () => {
         ...formData,
         room_id: gameData.room_id
       }
+
+      if(gameData.players.filter((player: Player) => {
+        return player.name == formData.player_name;
+      }).length > 0 || parseFloat(formData.buy_in_amount) <= 0) return false;
 
       const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}api/addPokerPlayer`, data, {headers: postHeaders});
       console.log(response.data);
@@ -89,7 +124,7 @@ const PokerRoomPage: React.FC = () => {
     }
   };
 
-    const authenticate = async (e: React.FormEvent<HTMLFormElement>, passwordData:any) => {
+  const authenticate = async (e: React.FormEvent<HTMLFormElement>, passwordData:any) => {
     e.preventDefault();
 
     try {
@@ -110,47 +145,53 @@ const PokerRoomPage: React.FC = () => {
     }
   };
 
-  return (<div className={styles.content} >
-    {authenticated ? (
-      <React.Fragment>
-        {gameData.is_open &&             
-            <form className={styles.form_container} onSubmit={handleFormSubmit}>
-                <div className={styles.intput_container}>
-                <input
-                  type="text"
-                  value={formData.player_name}
-                  onChange={(e) => setFormData({ ...formData, player_name: e.target.value })}
-                  placeholder="Player Name"
-                  name="player_name"
-                />
-                <input
-                  type="text"
-                  value={formData.buy_in_amount}
-                  onChange={(e) => setFormData({ ...formData, buy_in_amount: e.target.value })}
-                  placeholder="Buy In Amount"
-                  name="buy_in_amount"
-                />
-                </div>
+  return (
+    <React.Fragment>
+      <PokerLayout locked={selectedPlayer}>
+        <h1 className={styles.room_date}>{gameData.date}</h1>
+        {authenticated ? (
+          <React.Fragment>
+            {gameData.is_open ?       
+                (<Form submitHandler={handleFormSubmit}>
+                  <p>Enter a unique Player Name, and a positive Buy In Amount</p>
+                  <div className={styles.intput_container}>
+                    <input
+                      type="text"
+                      value={formData.player_name}
+                      onChange={(e) => setFormData({ ...formData, player_name: e.target.value })}
+                      placeholder="Player Name"
+                      name="player_name"
+                    />
+                    <input
+                      type="text"
+                      value={formData.buy_in_amount}
+                      onChange={(e) => setFormData({ ...formData, buy_in_amount: e.target.value })}
+                      placeholder="Buy In Amount"
+                      name="buy_in_amount"
+                    />
+                  </div>
+                  <button type="submit">Add Player</button>
+                </Form>) : (
+                  <div className={styles.closed_room}>
+                    <h2>Room Is Closed</h2>
+                    <p>This room is closed and can no longer be changed. Results for this room can be found below.</p>
+                  </div>
+                )}
 
-                <button type="submit">Add Player</button>
-              </form>}
+                  {hasFethced ? (
+                    <React.Fragment>
+                      <RoomStats totalBank={totalBank} remainingBank={remainingBank} activePlayers={activePlayers}/>
+                      <Players players={gameData.players} isOpen={gameData.is_open} handleSelectPlayer={handleSelectPlayer} />
+                    </React.Fragment>
+                  ) : null}
 
-
-
-              {hasFethced ? (
-                <React.Fragment>
-                  <RoomStats players={gameData.players}/>
-                  <Players players={gameData.players} handleAddChipsClick={handleAddChipsClick} handleCashoutClick={handleCashoutClick}/>
-                </React.Fragment>
-              ) : null}
-
-              {!gameData.is_open && <SuggestedReimbursement players={gameData.players}/>}
-      </React.Fragment>):
-      (<RoomPassword handleFormSubmit={authenticate} />)
-      }
-
-            
-          </div>);
+                  {<SuggestedReimbursement players={gameData.players} remainingBank={remainingBank} activePlayers={activePlayers}/>}
+          </React.Fragment>):
+        (<RoomPassword handleFormSubmit={authenticate} />)}
+      </PokerLayout>
+      <PlayerPopup player={selectedPlayer} remainingBank={remainingBank} unselectPlayer={unselectPlayer} handleBuyInClick={handleAddChipsClick} handleCashoutClick={handleCashoutClick}  handleDeletePlayerClick={handleDeletePlayerClick}/>
+    </React.Fragment>
+  );
 };
 
 export default PokerRoomPage;

@@ -17,7 +17,11 @@ const RoomsList: React.FC<RoomsListProps> = ({ rooms}) => {
     <div className={styles.container}>
       <div className={styles.header}>
         <h2>Poker Rooms</h2>
-        <div className={styles.rooms_toggle} onClick={()=>setAllRooms(!allRooms)}>{allRooms ? 'Open Rooms Only' : 'All Rooms'}</div>
+        <div className={styles.rooms_toggle} onClick={()=>setAllRooms(!allRooms)}>
+          All Rooms
+          <div className={`${styles.toggle} ${allRooms && styles.toggle_enabled}`}>
+        </div>
+</div>
       </div>
       <div className={styles.list}>
         {rooms.filter((room) => {
