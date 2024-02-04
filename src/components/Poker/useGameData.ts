@@ -8,6 +8,7 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
 
     const [gameData, setGameData] = useState({
         room_id: '',
+        room_name: null,
         players: [] as Player[],
         bank: 0,
         is_open: true,
@@ -81,6 +82,7 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
             setGameData({
                 ...gameData,
                 players: players,
+                room_name: response.data.room.name,
                 is_open: response.data.room.is_open == 0 ? false: true,
             });
 

@@ -4,6 +4,7 @@ import HomePage from './pages/Tarnib/HomePage/HomePage';
 import RoomPage from './pages/Tarnib/RoomPage/RoomPage';
 import PokerHomePage from './pages/Poker/HomePage/HomePage';
 import PokerRoomPage from './pages/Poker/RoomPage/RoomPage';
+import PrintPage from './pages/Poker/PrintPage/PrintPage';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/room/:roomId" element={<RoomPage />} />
           <Route path="/poker" element={<PokerHomePage />} />
           <Route path="poker/room/:roomId" element={<PokerRoomPage />} />
+          <Route path="poker/room/:roomId/print" element={<PrintPage />} />
         </Routes>
       </Router>
     </div>

@@ -10,7 +10,7 @@ interface RoomsListItemProps {
 }
 
 // Define the PlayerHand component
-const RoomsListItem: React.FC<RoomsListItemProps> = ({ room}) => {  
+const RoomsListItem: React.FC<RoomsListItemProps> = ({ room }) => {  
 
   const navigate = useNavigate();
   function handleRoomListItemClick() {
@@ -18,10 +18,9 @@ const RoomsListItem: React.FC<RoomsListItemProps> = ({ room}) => {
   }
 
   var date = new Date(room.date)
-
   return (
     <div className={`${styles.container} ${room.is_open ? '': styles.closed_room}`} onClick={() => handleRoomListItemClick()}>
-        <div className={styles.room_date}>{date.toDateString()}</div>
+        <div className={styles.room_date}>{room.name ? room.name : date.toDateString()}</div>
         {room.password && <div className={styles.lock}style={{ backgroundImage: 'url("/assets/images/password_icon.svg")' }}></div>}
         
     </div>

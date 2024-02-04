@@ -5,10 +5,11 @@ import Header from '../../components/Poker/Header/Header';
 interface PokerLayoutProps{
     children: ReactNode;
     locked?: any;
+    room_id?: string;
 }
 
 
-export default function PokerLayout({ children, locked }: PokerLayoutProps) {
+export default function PokerLayout({ children, locked, room_id }: PokerLayoutProps) {
     if(locked){
         document.querySelector('body')?.classList.add('locked')
     }else{
@@ -16,7 +17,7 @@ export default function PokerLayout({ children, locked }: PokerLayoutProps) {
     }
     return (
         <div>
-            <Header/>
+            <Header room_id={room_id}/>
             <div className={styles.main}>{children}</div>
         </div>
     );

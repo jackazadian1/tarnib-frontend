@@ -1,0 +1,33 @@
+
+.print{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .print .print_stats{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .print .print_stats>*{
+    margin: 0;
+    padding: 0px;
+  }
+
+  .print_password{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .print_players{
+    pointer-events: none;
+  }

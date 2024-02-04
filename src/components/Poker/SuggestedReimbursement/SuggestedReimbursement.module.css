@@ -10,6 +10,7 @@
     font-size: 18px;
     border-radius: 5px;
     overflow: hidden;
+    position: relative;
 }
 
 .container h2{

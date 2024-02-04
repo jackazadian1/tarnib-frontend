@@ -12,6 +12,8 @@ import Cookies from 'universal-cookie';
 import Form from '../../../components/Forms/Form';
 import PokerLayout from '../../../layouts/Poker/PokerLayout';
 import PlayerPopup from '../../../components/Poker/PlayerPopup/PlayerPopup';
+import PrintPage from '../PrintPage/PrintPage';
+import { formatter } from '../../../components/Poker/CurrencyFormat';
 
 
 
@@ -57,6 +59,8 @@ const PokerRoomPage: React.FC = () => {
       setGameData({ ...gameData, room_id: roomId });
       setReadyToFetchPassword(true);
     }
+    console.log(gameData)
+    //window.print();
   }, []);
 
   useEffect(() => {    
@@ -147,8 +151,8 @@ const PokerRoomPage: React.FC = () => {
 
   return (
     <React.Fragment>
-      <PokerLayout locked={selectedPlayer}>
-        <h1 className={styles.room_date}>{gameData.date}</h1>
+      <PokerLayout locked={selectedPlayer} room_id={gameData.room_id}>
+        <h1 className={styles.room_date}>{gameData.room_name ? gameData.room_name : gameData.date}</h1>
         {authenticated ? (
           <React.Fragment>
             {gameData.is_open ?       

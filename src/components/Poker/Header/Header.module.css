@@ -10,6 +10,7 @@
     align-items: center;
     box-shadow: 0px 2px 10px 1px rgba(0,0,0,0.5);
     transition: all 0.2s ease-in-out;
+    z-index: 10;
 }
 
 .header.top{
@@ -27,14 +28,23 @@
     margin: 0;
 }
 
-.header img{
+.header h1 img{
     width: 20px;
     margin: 0px 5px;
 }
 
-.header img.spade{
+.header h1 img.spade{
     transform: scale(1.4);
 }
+
+.header>img{
+    position: absolute;
+    height: 40px;
+    cursor: pointer;
+    right: 20px;
+    filter: invert(100%);
+}
+
 
 @media screen and (max-width: 600px) {
     .header {

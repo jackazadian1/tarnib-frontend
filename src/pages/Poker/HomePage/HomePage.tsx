@@ -9,7 +9,7 @@ import PokerLayout from '../../../layouts/Poker/PokerLayout';
 import Form from '../../../components/Forms/Form';
 
 const PokerHomePage: React.FC = () => {
-  const [form1Data, setForm1Data] = useState({ password: '' });
+  const [form1Data, setForm1Data] = useState({ password: '' , name: ''});
   const [rooms, setRooms] = useState([] as Room[]);
   const [readyToFetch, setReadyToFetch] = useState(false);
   const [hasFethced, setHasFetched] = useState(false);
@@ -36,6 +36,7 @@ const PokerHomePage: React.FC = () => {
           roomsArr.push({
                 id: room.id,
                 room_id: room.room_id,
+                name: room.name,
                 password: room.password,
                 is_open: room.is_open == 1,
                 date: room.created_at,
@@ -87,7 +88,14 @@ const PokerHomePage: React.FC = () => {
     <PokerLayout>
         <Form submitHandler={handleForm1Submit}>
           <h2>Create Poker Room</h2>
-          <p>Create a new poker room. You can optionally password protect your room.</p>
+          <p>Create a new poker room. You can optionally name and/or password protect your room.</p>
+            <input
+              type="text"
+              value={form1Data.name}
+              onChange={(e) => setForm1Data({ ...form1Data, name: e.target.value })}
+              placeholder="Room Name (optional)"
+              name="name"
+            />
             <input
               type="text"
               value={form1Data.password}

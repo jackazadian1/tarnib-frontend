@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import styles from './Header.module.css';
 
-export default function Header() {
+interface PrintPageProps{
+  room_id?: string;
+}
+
+export default function Header({room_id}:PrintPageProps) {
       // State to track whether the scroll position is at the top
   const [isAtTop, setIsAtTop] = useState(true);
 
@@ -13,6 +17,11 @@ export default function Header() {
       setIsAtTop(false);
     }
   };
+
+  const goToPrint = () => {
+    const url = `/poker/room/${room_id}/print`;
+    window.open(url, '_blank');
+   }
 
   // Add scroll event listener when the component mounts
   useEffect(() => {
@@ -32,6 +41,10 @@ export default function Header() {
                 <img className={styles.heart} src="/assets/images/heart.png" alt="" />
             </h1>
         </a>
+        {room_id ? 
+        ( <img src="/assets/images/save.svg" onClick={goToPrint}/>)
+        : null}
+       
     </div>
   );
 };

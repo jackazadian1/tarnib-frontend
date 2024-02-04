@@ -10,7 +10,7 @@ interface RoomsListProps {
 }
 
 // Define the PlayerHand component
-const RoomsList: React.FC<RoomsListProps> = ({ rooms}) => {
+const RoomsList: React.FC<RoomsListProps> = ({ rooms }) => {
   
   const [allRooms, setAllRooms] = useState(false);
   return (
@@ -18,7 +18,7 @@ const RoomsList: React.FC<RoomsListProps> = ({ rooms}) => {
       <div className={styles.header}>
         <h2>Poker Rooms</h2>
         <div className={styles.rooms_toggle} onClick={()=>setAllRooms(!allRooms)}>
-          All Rooms
+          {allRooms ? 'All Rooms' : 'Open Rooms'}
           <div className={`${styles.toggle} ${allRooms && styles.toggle_enabled}`}>
         </div>
 </div>
