@@ -1,0 +1,164 @@
+.background{
+    position: fixed;
+    background-color: rgba(0,0,0,0.7);
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out 0.2s;
+    pointer-events: none;
+}
+
+.container{
+    width: 100%;
+    max-height: 70vh;
+    overflow: hidden;
+    position: fixed;
+    bottom: 0;
+    background: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+@media screen and (max-width: 600px) {
+    .container {
+        padding-bottom: 20px;
+    }
+}
+
+
+.background.active{
+    pointer-events: initial;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.background.active .container{
+    transform: translateY(0%);
+    transition: transform 0.3s ease-in-out 0.2s;
+}
+
+.background .container.dragging{
+    transition: none;
+}
+
+.header{
+    width: 100%;
+    padding: 20px;
+    padding-top: 40px;
+    background-color: var(--green-theme);
+    position: relative;
+    cursor: pointer;
+}
+
+.header h2{
+    margin: 0;
+    text-align: center;
+    font-size: 24px;
+    color: white;
+    pointer-events: none;
+}
+
+.header .drag_close_button{
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    width: 50px;
+    height: 5px;
+    background-color: white;
+    border-radius: 5px;
+    transform: translateX(-50%);
+    pointer-events: none;
+
+}
+
+.header .close_button{
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transform: translateY(-50%);
+}
+
+.header .close_button::after, .header .close_button::before{
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 30px;
+    height: 5px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.header .close_button::after{
+    transform: translate(-50%, -50%) rotateZ(45deg);
+}
+
+.header .close_button::before{
+    transform: translate(-50%, -50%)  rotateZ(-45deg);
+}
+
+.body{
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    max-height: calc(70vh - 88px);
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.body>h2{
+    text-align: center;
+    padding: 100px 0px;
+}
+
+.body li{
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    padding: 20px 15px;
+    justify-content: space-between;
+    gap: 10px;
+
+}
+
+.body li:last-child{
+    border-bottom: none !important;
+}
+
+.body li:nth-child(2n){
+    background-color: rgba(196, 208, 236, 0.409);
+}
+
+.body li .time{
+    text-wrap: nowrap;
+}
+
+.body li .added_chips{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.body .section{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.body .section:last-child{
+    border-bottom: none !important;
+}
+
+.body .section>*{
+    margin: 0px;
+}

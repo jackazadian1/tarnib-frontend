@@ -12,7 +12,8 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
         players: [] as Player[],
         bank: 0,
         is_open: true,
-        date: ''
+        date: '',
+        history: null
     });
 
     const [hasPassword, setHasPassword] = useState(-1);
@@ -84,6 +85,7 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
                 players: players,
                 room_name: response.data.room.name,
                 is_open: response.data.room.is_open == 0 ? false: true,
+                history: JSON.parse(response.data.room.history)
             });
 
             setTimeout(()=>{
@@ -99,8 +101,10 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
 
     const handleAddChipsClick = async (id:number, amount: number) => {
         let data = {
+            room_id: gameData.room_id,
             id: id,
-            amount: amount
+            amount: amount,
+            time: getClientTime()
         }
         try {
             const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}api/addChips`, data, {headers: postHeaders})
@@ -111,7 +115,7 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
                     if (player.id === id) {
                         return {
                             ...player,
-                            buy_in_amount: response.data.new_balance,
+                            buy_in_amount: response.data.new_balance
                         };
                     }
                     return player;
@@ -120,6 +124,7 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
                 return {
                     ...prevGameData,
                     players: updatedPlayers,
+                    history: response.data.history
                 };
             })
 
@@ -134,7 +139,8 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
         let data = {
             room_id: gameData.room_id,
             id: id,
-            amount: amount
+            amount: amount,
+            time: getClientTime()
         }
         try {
             const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}api/cashout`, data, {headers: postHeaders})
@@ -145,7 +151,7 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
                     if (player.id === id) {
                         return {
                             ...player,
-                            cash_out_amount: amount,
+                            cash_out_amount: amount
                         };
                     }else if (player.id === response.data.last_player) {
                         return {
@@ -159,6 +165,7 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
                 return {
                     ...prevGameData,
                     players: updatedPlayers,
+                    history: response.data.history
                 };
             })
             
@@ -189,7 +196,8 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
         try {
           let data = {
             room_id: gameData.room_id,
-            id: id
+            id: id,
+            time: getClientTime()
           }
     
           const response = await axios.post(`${process.env.REACT_APP_PHP_BACKEND_API_URI}api/deletePokerPlayer`, data, {headers: postHeaders});
@@ -199,12 +207,31 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
             ...prevGameData,
             players: gameData.players.filter((player) => {
                 return player.id != id
-              }),
+            }),
+            history: response.data.history
           }));
         } catch (error) {
           console.error(error);
         }
-      };
+    };
+
+    const getClientTime = () => {
+        var now = new Date();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var ampm = hours >= 12 ? 'pm' : 'am';
+    
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        var minutesStr = minutes < 10 ? '0' + minutes.toString() : minutes.toString();
+    
+        var timeString = hours + ':' + minutesStr + ' ' + ampm;
+        return timeString;
+    }
+
+    const handleOpenHistory = () => {    
+        console.log('hi')
+    };
 
     return {
         gameData,
@@ -214,9 +241,11 @@ export const useGameDataPoker = (setHasFetched: React.Dispatch<React.SetStateAct
         fetchData,
         selectedPlayer,
         setSelectedPlayer,
+        getClientTime,
         handleAddChipsClick,
         handleCashoutClick,
         handleSelectPlayer,
+        handleOpenHistory,
         unselectPlayer,
         handleDeletePlayerClick
     };

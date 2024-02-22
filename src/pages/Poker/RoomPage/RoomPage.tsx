@@ -14,6 +14,7 @@ import PokerLayout from '../../../layouts/Poker/PokerLayout';
 import PlayerPopup from '../../../components/Poker/PlayerPopup/PlayerPopup';
 import PrintPage from '../PrintPage/PrintPage';
 import { formatter } from '../../../components/Poker/CurrencyFormat';
+import HistoryPopup from '../../../components/Poker/HistoryPopup/HistoryPopup';
 
 
 
@@ -32,6 +33,7 @@ const PokerRoomPage: React.FC = () => {
   const [remainingBank, setRemainingBank] = useState(0);
   const [totalBank, setTotalBank] = useState(0);
   const [activePlayers, setActivePlayers] = useState(0);
+  const [historyOpen, setHistoryOpen] = useState(false);
 
   const [formData, setFormData] = useState({ player_name: '', buy_in_amount: '' });
 
@@ -46,9 +48,11 @@ const PokerRoomPage: React.FC = () => {
     fetchData,
     selectedPlayer,
     setSelectedPlayer,
+    getClientTime,
     handleAddChipsClick,
     handleCashoutClick,
     handleSelectPlayer,
+    handleOpenHistory,
     unselectPlayer,
     handleDeletePlayerClick
   } = useGameDataPoker(setHasFetched);
@@ -60,7 +64,6 @@ const PokerRoomPage: React.FC = () => {
       setReadyToFetchPassword(true);
     }
     console.log(gameData)
-    //window.print();
   }, []);
 
   useEffect(() => {    
@@ -103,7 +106,8 @@ const PokerRoomPage: React.FC = () => {
     try {
       let data = {
         ...formData,
-        room_id: gameData.room_id
+        room_id: gameData.room_id,
+        time: getClientTime()
       }
 
       if(gameData.players.filter((player: Player) => {
@@ -122,6 +126,7 @@ const PokerRoomPage: React.FC = () => {
       setGameData(prevGameData => ({
         ...prevGameData,
         players: [...prevGameData.players, newPlayer],
+        history: response.data.history
       }));
     } catch (error) {
       console.error(error);
@@ -149,9 +154,13 @@ const PokerRoomPage: React.FC = () => {
     }
   };
 
+  const handleHistoryState = (state: boolean) => {
+    setHistoryOpen(state);
+  }
+
   return (
     <React.Fragment>
-      <PokerLayout locked={selectedPlayer} room_id={gameData.room_id}>
+      <PokerLayout locked={selectedPlayer != null || historyOpen} room_id={gameData.room_id} handleHistoryState={handleHistoryState}>
         <h1 className={styles.room_date}>{gameData.room_name ? gameData.room_name : gameData.date}</h1>
         {authenticated ? (
           <React.Fragment>
@@ -194,6 +203,8 @@ const PokerRoomPage: React.FC = () => {
         (<RoomPassword handleFormSubmit={authenticate} />)}
       </PokerLayout>
       <PlayerPopup player={selectedPlayer} remainingBank={remainingBank} unselectPlayer={unselectPlayer} handleBuyInClick={handleAddChipsClick} handleCashoutClick={handleCashoutClick}  handleDeletePlayerClick={handleDeletePlayerClick}/>
+      <HistoryPopup history={gameData.history} open={historyOpen} handleHistoryState={handleHistoryState}/>
+
     </React.Fragment>
   );
 };

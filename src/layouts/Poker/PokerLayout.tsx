@@ -6,10 +6,11 @@ interface PokerLayoutProps{
     children: ReactNode;
     locked?: any;
     room_id?: string;
+    handleHistoryState?: (state:boolean) => void;
 }
 
 
-export default function PokerLayout({ children, locked, room_id }: PokerLayoutProps) {
+export default function PokerLayout({ children, locked, room_id, handleHistoryState }: PokerLayoutProps) {
     if(locked){
         document.querySelector('body')?.classList.add('locked')
     }else{
@@ -17,7 +18,7 @@ export default function PokerLayout({ children, locked, room_id }: PokerLayoutPr
     }
     return (
         <div>
-            <Header room_id={room_id}/>
+            <Header room_id={room_id} handleHistoryState={handleHistoryState}/>
             <div className={styles.main}>{children}</div>
         </div>
     );
